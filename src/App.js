@@ -1,6 +1,5 @@
 // import logo from './logo.svg';
 import React, { Component } from 'react';
-// import Button from 'antd/lib/button';
 import {Button} from 'antd';     
 import './App.css';
 
