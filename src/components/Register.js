@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-class Index extends Component {
+class Register extends Component {
     render() {
         return (
             <div>
-                index
+                Registerpage
             </div>
         )
     }
 }
-export default Index;
+export default Register;

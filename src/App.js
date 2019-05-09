@@ -1,15 +1,12 @@
-// import logo from './logo.svg';
-import React, { Component } from 'react';
-import {Button} from 'antd';     
+import React from 'react';
+import { BrowserRouter} from 'react-router-dom';
+import BaseLayout from './views/BaseLayout';
 import './App.css';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <Button type="primary">Button</Button>
-      </div>
-    );
-  }
-}
+const App = () =>(
+  <BrowserRouter>
+    <BaseLayout/>
+  </BrowserRouter>
+)
+
 export default App;
