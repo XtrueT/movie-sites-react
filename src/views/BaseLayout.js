@@ -7,18 +7,26 @@ import Home from '../components/Home';
 import Register from '../components/Register';
 import Movie from '../components/Movie';
 import Profile from '../components/Profile';
-import Face from '../components/Face';
 
 import {Layout,Menu,Icon} from 'antd';
 
-const {Header,Content,Footer,Sider} = Layout;
+const {Content,Footer,Sider} = Layout;
 
 class BaseLayout extends Component {
-    state = {
-        collapsed: false,
-        username:'一眼离花'
+    constructor(){
+        super();
+        this.state = {
+            isLogin:false,
+            message:'',
+            user:{
+                user_name:'',
+                user_img:'',
+                profile:'',
+                email:''
+            }
+        };
     };
-    
+
     onCollapse = (collapsed) => {
         console.log(collapsed);
         this.setState({ collapsed });
@@ -34,8 +42,7 @@ class BaseLayout extends Component {
                         height: '100vh', position: 'fixed',
                     }}
                 >
-                    <Face username={this.state.username} ></Face>
-                    <Menu theme="dark" mode="vertical" defaultSelectedKeys={['1']}>
+                    <Menu theme="dark" mode="vertical">
                         <Menu.Item key="1">
                             <Link to='/'>
                                 <Icon type="user" />
@@ -43,7 +50,7 @@ class BaseLayout extends Component {
                             </Link>
                         </Menu.Item>
                         <Menu.Item key="2">
-                            <Link to='/movie'>
+                            <Link to='/admin/movie'>
                                 <Icon type="video-camera" />
                                 <span className="Link-text">Movie</span>
                             </Link>
@@ -75,13 +82,13 @@ class BaseLayout extends Component {
                     </Menu>
                 </Sider>
                 <Layout  className={ this.state.collapsed ? 'collapsed_t' : 'collapsed_f ' } >
-                    <Header style={{ background: '#fee',width:'100%',height: 60, position: 'fixed', zIndex:1}}>
-                    </Header>
+                    {/* <Header style={{ background: '#fee',width:'100%',height: 60, position: 'fixed', zIndex:1}}>
+                    </Header> */}
                     <Content style={{ margin: '76px 16px' }}>
-                        <div style={{ padding: 24, background: '#fff', minHeight: '76vh' }}>
+                        <div style={{ padding: 24, background: '#fff', minHeight: '60vh' }}>
                         <Route path="/" exact component ={Home}/>
-                        <Route path="/movie" exact component ={Movie}/>
-                        <Route path="/profile" exact component ={Profile}/>
+                        <Route path="/admin/movie" exact component ={Movie}/>
+                        <Route path="/admin/profile" exact component ={Profile}/>
                         <Route path="/about" exact component ={About}/>
                         <Route path="/login" exact component ={Login}/>
                         <Route path="/register" exact component ={Register}/>

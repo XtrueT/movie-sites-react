@@ -1,12 +1,10 @@
 import React from 'react';
 import { BrowserRouter} from 'react-router-dom';
-import BaseLayout from './views/BaseLayout';
-import './App.css';
+import UserLayout from './views/UserLayout';
 
 const App = () =>(
   <BrowserRouter>
-    <BaseLayout/>
-  </BrowserRouter>
+    <UserLayout/>
+</BrowserRouter>
 )
-
 export default App;
