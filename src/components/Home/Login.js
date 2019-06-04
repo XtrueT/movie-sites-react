@@ -2,17 +2,26 @@ import React, { Component ,Fragment} from 'react';
 import {Link} from 'react-router-dom';
 import {Form, Icon, Input, Button, Checkbox,message as Message} from 'antd';
 import {Axios_post} from '../../api/server';
+import {isLogin} from '../../utils/utils';
 
 class LoginForm extends Component {
+
+    pathname = window.location.pathname;
     
     handleSubmit = (e) => {
         e.preventDefault();
         const callback = (that,res)=>{
-            const {message,status} = res
+            const {message,status} = res;
+            const {isLogged,role} = isLogin();
             if (status===200){
-                this.props.Set_isLogin(true);
                 Message.success(message,1);
-                this.props.history.push('/');
+                if(role ==="admin"){
+                    window.location.href="/admin";
+                    
+                }else{
+                    this.props.Set_isLogin(isLogged);
+                    this.props.history.push('/');
+                }
             };
             if(message!=="登录成功"&&status!==0){
                 Message.error(message,1);
@@ -23,14 +32,19 @@ class LoginForm extends Component {
         }
         this.props.form.validateFields((err, values) => {
             if (!err) {
-            values['action']='login';
-            Axios_post('/login',values,this,callback);
+            if(this.pathname==="/login"){
+                Axios_post('/login',values,this,callback);
+            }else if(this.pathname ==="/admin/login"){
+                values['action'] ='login';
+                Axios_post('/admin/login',values,this,callback);
+            }
             };
         });
     };
 
     render() {
         const {getFieldDecorator} = this.props.form;
+        // console.log(this.pathname);
         return (
             <Fragment>
             <Form onSubmit={this.handleSubmit} className="login-form">
@@ -59,7 +73,7 @@ class LoginForm extends Component {
                 <Button type="primary" htmlType="submit" className="login-form-button">
                     Log in
                 </Button>
-                Or <Link to="/register">register now!</Link>
+                Or <Link to = {this.pathname==="/admin/login"?"/admin/register":"/register"}>register now!</Link>
                 </Form.Item>
             </Form>
             </Fragment>

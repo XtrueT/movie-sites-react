@@ -5,18 +5,23 @@ import {Form,Input,Icon,Checkbox,Button,message as Message} from 'antd';
 
 class RegistrationForm extends Component {
 
-        state = {
-        confirmDirty: false,
+    state = {
+            confirmDirty: false,
         };
     
-        handleSubmit = e => {
+    handleSubmit = e => {
         e.preventDefault();
+        const {pathname} = this.props.location;
         const callback = (that,res)=>{
             console.log(res);
             const {message,status} = res
             if (status===200){
                 Message.success(message,1);
-                this.props.history.push('/login');
+                if(pathname ==="/admin/register"){
+                    this.props.history.push('/admin/login');
+                }else{
+                    this.props.history.push('/login');
+                }
             };
             if(message!=="注册成功"){
                 Message.error(message,1);
@@ -24,38 +29,50 @@ class RegistrationForm extends Component {
         }
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                values['action']='register';
-                Axios_post('/register',values,this,callback);
+                if(pathname ==="/register"){
+                    Axios_post('/register',values,this,callback);
+                }else if(pathname ==="/admin/register"){
+                    values['action'] = 'register';
+                    Axios_post('/admin/register',values,this,callback);
+                }
             }
         });
     };
     
-        handleConfirmBlur = e => {
+    handleConfirmBlur = e => {
         const value = e.target.value;
         this.setState({ confirmDirty: this.state.confirmDirty || !!value });
-        };
+    };
     
-        compareToFirstPassword = (rule, value, callback) => {
+    compareToFirstPassword = (rule, value, callback) => {
         const form = this.props.form;
         if (value && value !== form.getFieldValue('password')) {
             callback('Two passwords that you enter is inconsistent!');
         } else {
             callback();
         }
-        };
+    };
     
-        validateToNextPassword = (rule, value, callback) => {
+    validateToNextPassword = (rule, value, callback) => {
         const form = this.props.form;
         if (value && this.state.confirmDirty) {
             form.validateFields(['confirm'], { force: true });
         }
         callback();
-        };
+    };
     
     render() {
         const { getFieldDecorator } = this.props.form;
+        const {pathname} = this.props.location;
+        // console.log(pathname);
         return (
             <Form onSubmit={this.handleSubmit} className="login-form">
+            <Form.Item>
+                {getFieldDecorator('user_name', {
+                rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
+                })(<Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />)}
+            </Form.Item>
+            {pathname === "/admin/register"?'':
             <Form.Item>
                 {getFieldDecorator('email', {
                 rules: [
@@ -70,6 +87,7 @@ class RegistrationForm extends Component {
                 ],
                 })(<Input prefix={<Icon type="email" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Email" />)}
             </Form.Item>
+            }
             <Form.Item hasFeedback>
                 {getFieldDecorator('password', {
                 rules: [
@@ -96,11 +114,6 @@ class RegistrationForm extends Component {
                 ],
                 })(<Input.Password onBlur={this.handleConfirmBlur} prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Confirm Password"/>)}
             </Form.Item>
-            <Form.Item>
-                {getFieldDecorator('user_name', {
-                rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
-                })(<Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />)}
-            </Form.Item>
             <Form.Item >
                 {getFieldDecorator('agreement', {
                 valuePropName: 'checked',
@@ -117,7 +130,7 @@ class RegistrationForm extends Component {
             </Form.Item>
             </Form>
         );
-        }
     }
+}
 const Register = Form.create({ name: 'register' })(RegistrationForm);
 export default Register;

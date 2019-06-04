@@ -19,7 +19,7 @@ Axios_server.interceptors.request.use(
     },
     error =>{
         if(error.request){
-            // console.log(error.request.data);
+            console.log(error.request.data);
             let {message} = error.request.data;
             // alert(message);
             console.log(message);
@@ -60,7 +60,12 @@ Axios_server.interceptors.response.use(
             if(message==='无效token,请重新登录'){
                 // alert(message);
                 window.sessionStorage.removeItem('access_token');
-                window.location.reload();
+                if(window.sessionStorage.getItem('admin_name')){
+                    window.sessionStorage.removeItem('admin_name');
+                    window.location.href='/admin/login';
+                }else{
+                    window.location.href='/login';
+                }
             }
             return error.response.data;
         }

@@ -20,7 +20,6 @@ const useDataApi = (initialUrl,initialData,initialMethod) =>{
                             case 'post':
                                 {
                                     result = await Axios_server.post(url,data);
-                                    console.log(result);
                                     break;
                                 }
                                 case 'put':
@@ -36,6 +35,7 @@ const useDataApi = (initialUrl,initialData,initialMethod) =>{
                                 case 'get':
                                 {
                                     result = await Axios_server.get(url,data);
+                                    console.log(result);
                                     break;
                                 }
                                 case 'delete':

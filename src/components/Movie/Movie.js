@@ -65,7 +65,6 @@ function Movie({match}){
     else{
         return (
             <div>
-                {/* <Comment/> */}
                 Movie
             </div>
         )

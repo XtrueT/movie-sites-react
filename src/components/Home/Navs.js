@@ -7,7 +7,6 @@ import {Menu,message as Message} from 'antd';
 const SubMenu = Menu.SubMenu;
 
 function Navs(props){
-    // console.log(props);
     const {isLogin} = props.nav;
     if(isLogin){
         return (
@@ -50,6 +49,7 @@ function Navs(props){
                                     const {message,status} = res
                                     if (status===200){
                                         window.sessionStorage.removeItem('access_token');
+                                        // window.sessionStorage.removeItem('role');
                                         Message.success(message,1);
                                         // window.location.href='/';
                                         props.Set_isLogin(false);
@@ -102,6 +102,16 @@ function Navs(props){
             <Menu.Item key="5">
                 <NavLink to='/about' exact  activeStyle={{color:'red',fontSize:20}}>
                     <span className="NavLink-text">About</span>
+                </NavLink>
+            </Menu.Item>
+            <Menu.Item key="6">
+                <NavLink to='/admin/login' exact  activeStyle={{color:'red',fontSize:20}}>
+                    <span className="NavLink-text">AdminLogin</span>
+                </NavLink>
+            </Menu.Item>
+            <Menu.Item key="7">
+                <NavLink to='/admin/register' exact  activeStyle={{color:'red',fontSize:20}}>
+                    <span className="NavLink-text">AdminRegister</span>
                 </NavLink>
             </Menu.Item>
         </Menu>

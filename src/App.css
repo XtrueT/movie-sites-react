@@ -1,8 +1,29 @@
 @import '~antd/dist/antd.css';
 
-.NavLink-active{
-    color:red;
+.collapsed_false_face{
+    display: inline-block;
 }
+.collapsed_false_face button{
+    margin-left: 10px;
+    display: inline;
+}
+
+.collapsed_true_face{
+    display: inline-block;
+    overflow: hidden;
+    /* display: none; */
+}
+.collapsed_true_face span{
+    display: none;
+}
+.collapsed_true_face button{
+    display: none;
+}
+.face:hover .collapsed_true_face button{
+    display: inline-block;
+    overflow: hidden;
+}
+
 .collapsed_t {
     margin-left: 80px;
 }
@@ -23,12 +44,13 @@
 }
 
 .face {
-    float:right;
-    background-color: #fff;
-    line-height: 64px;
-    padding-left: 50px;
-    padding-right: 50px;
+    background-color: #364d79;
+    text-align: center;
+    line-height: 48px;
+    color: #fff;
+    overflow: hidden;
 }
+
 
 .NavLink-text {
     margin-left: 10px;

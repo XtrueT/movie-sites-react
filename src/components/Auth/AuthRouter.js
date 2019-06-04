@@ -6,7 +6,7 @@ import {isLogin} from '../../utils/utils';
 class AuthRouter extends Component{
     render(){
         const {component:Component,...rest} = this.props;
-        const isLogged = isLogin();
+        const {isLogged} = isLogin();
         return(
             <Route
                 {...rest}

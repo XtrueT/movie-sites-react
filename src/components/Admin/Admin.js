@@ -1,0 +1,24 @@
+import React from 'react';
+import {Route,Switch,Redirect} from 'react-router-dom';
+
+import AuthRouter from '../Auth/AuthRouter';
+import Logs from './Logs';
+import Resources from './Resources';
+import Error from '../Home/Error';
+
+const Admin = ()=>{
+    return (
+        <Switch>
+        <Route path="/admin" exact component={()=>(<div>adminHome</div>)}/>
+        <AuthRouter path="/admin/movies/:action" exact component ={Resources}/>
+        <AuthRouter path="/admin/logs/:role" exact component ={Logs}/>
+        {/* 登录权限控制组件 */}
+        <AuthRouter path="/admin/users/:action" exact component ={()=>(<div>adminUser</div>)}/>
+        <AuthRouter path="/admin/change_password" exact component={()=>(<div>change_password</div>)}/>
+        <Route path="/error" component={Error} />
+        <Route path="*" render={() => <Redirect to="/error"/> }/>
+        </Switch>
+    )
+}
+
+export default Admin;

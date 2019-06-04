@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Route,Switch,Redirect} from 'react-router-dom';
+
 import {isLogin} from '../utils/utils';
 
 import AuthRouter from '../components/Auth/AuthRouter';
@@ -16,11 +17,13 @@ import {Layout} from 'antd';
 
 const {Content} = Layout;
 
+const {isLogged} = isLogin();
+
 class UserLayout extends Component {
     constructor(){
         super();
         this.state={
-            isLogin:isLogin(),
+            isLogin:isLogged,
         }
     }
     Set_isLogin=(boolean)=>{
@@ -49,10 +52,17 @@ class UserLayout extends Component {
                                     return <Login history={history} Set_isLogin={this.Set_isLogin}/>
                                 }
                             }/>
+                            <Route path="/admin/login" exact component={
+                                (props)=>{
+                                    const {history} = props;
+                                    return <Login history={history} Set_isLogin={this.Set_isLogin}/>
+                                }
+                            }/>
                             <Route path="/movie"  component ={Movie}/>
                             <Route path="/about" exact component ={About}/>
                             <Route path="/register" exact component ={Register}/>
-                            <Route path="/forgot_password" exact component ={Register}/>
+                            <Route path="/admin/register" exact component ={Register}/>
+                            <Route path="/forgot_password" exact component ={()=>(<div>forgot_password</div>)}/>
                             {/* 登录权限控制组件 */}
                             <AuthRouter path="/profile"  component ={Profile}/>
                             <AuthRouter path="/change_password" exact component={()=>(<div>change_password</div>)}/>
