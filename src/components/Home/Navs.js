@@ -1,40 +1,88 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import {NavLink,Link} from 'react-router-dom';
 import {Axios_delete} from '../../api/server';
+import {navMenus} from '../../utils/utils';
 import Face from '../User/Face';
-import {Menu,message as Message} from 'antd';
+import {Menu,message as Message,Icon} from 'antd';
 
 const SubMenu = Menu.SubMenu;
-
+const {user_menus,isLogged,notLogged} = navMenus();
 function Navs(props){
+    // console.log(props);
+    const [selectedKeys,set_selectKey]=useState([props.history.location.pathname])
+
+    useEffect(
+        ()=>{
+            window.addEventListener("popstate",set_selectKey([props.history.location.pathname]));
+        },[props]
+    )
+    
     const {isLogin} = props.nav;
-    if(isLogin){
-        return (
+    return (
             <Menu
+                selectedKeys={selectedKeys}
                 theme={"light"}
                 mode="horizontal"
                 style={{ lineHeight: '64px',paddingLeft:50,paddingRight:50}}
-                >
-                <Menu.Item key="1">
-                    <NavLink to='/' exact  activeStyle={{color:'red',fontSize:20}}>
-                        <span className="NavLink-text">Home</span>
-                    </NavLink>
-                </Menu.Item>
-                <Menu.Item key="2">
-                    <NavLink to='/movie' exact  activeStyle={{color:'red',fontSize:20}}>
-                        <span className="NavLink-text">Movie</span>
-                    </NavLink>
-                </Menu.Item>
-                <Menu.Item key="3">
-                    <NavLink to='/profile' exact  activeStyle={{color:'red',fontSize:20}}>
-                        <span className="NavLink-text">Profile</span>
-                    </NavLink>
-                </Menu.Item>
-                <Menu.Item key="4">
-                    <NavLink to='/about' exact  activeStyle={{color:'red',fontSize:20}}>
-                        <span className="NavLink-text">About</span>
-                    </NavLink>
-                </Menu.Item>
+                onClick={({ key })=>{set_selectKey([key])}}
+            >
+            {
+                user_menus.map(v => {
+                    return v.subMenu?
+                        <SubMenu 
+                            key={v.key} 
+                            title={
+                            <NavLink to={v.NavLinkTo}exact  activeStyle={{color:'darkmagenta',fontSize:20}}>
+                            <Icon type={v.icon}/>
+                            <span className="NavLink-text">{v.name}</span>
+                            </NavLink>
+                        }>
+                        {
+                            v.subMenu.map(k => 
+                                <Menu.Item key={k.NavLinkTo}>
+                                    <NavLink to={k.NavLinkTo} exact activeStyle={{color:'darkmagenta',fontSize:20}}>
+                                        <span className="NavLink-text">{k.name}</span>
+                                    </NavLink>
+                                </Menu.Item>)
+                        }
+                        </SubMenu>
+                        :
+                        <Menu.Item key={v.NavLinkTo}>
+                            <NavLink to={v.NavLinkTo}exact  activeStyle={{color:'darkmagenta',fontSize:20}}>
+                                <Icon type={v.icon}/>
+                                <span className="NavLink-text">{v.name}</span>
+                            </NavLink>
+                        </Menu.Item>
+                })
+            }
+            {isLogin?(
+                isLogged.map(v => {
+                    return v.subMenu?
+                        <SubMenu 
+                            key={v.key} 
+                            title={
+                            <NavLink to={v.NavLinkTo}exact  activeStyle={{color:'darkmagenta',fontSize:20}}>
+                            <Icon type={v.icon}/>
+                            <span className="NavLink-text">{v.name}</span>
+                            </NavLink>
+                        }>
+                        {
+                            v.subMenu.map(k => 
+                                <Menu.Item key={k.NavLinkTo}>
+                                    <NavLink to={k.NavLinkTo} exact activeStyle={{color:'darkmagenta',fontSize:20}}>
+                                        <span className="NavLink-text">{k.name}</span>
+                                    </NavLink>
+                                </Menu.Item>)
+                        }
+                        </SubMenu>
+                        :
+                        <Menu.Item key={v.NavLinkTo}>
+                            <NavLink to={v.NavLinkTo}exact  activeStyle={{color:'darkmagenta',fontSize:20}}>
+                                <Icon type={v.icon}/>
+                                <span className="NavLink-text">{v.name}</span>
+                            </NavLink>
+                        </Menu.Item>
+                }),
                 <SubMenu
                     title={
                         <Face/>
@@ -69,53 +117,36 @@ function Navs(props){
                                 Logout
                             </Link>
                     </Menu.Item>
-                </SubMenu>
+                </SubMenu>):
+                (notLogged.map(v => {
+                    return v.subMenu?
+                        <SubMenu 
+                            key={v.key} 
+                            title={
+                            <NavLink to={v.NavLinkTo}exact  activeStyle={{color:'darkmagenta',fontSize:20}}>
+                            <Icon type={v.icon}/>
+                            <span className="NavLink-text">{v.name}</span>
+                            </NavLink>
+                        }>
+                        {
+                            v.subMenu.map(k => 
+                                <Menu.Item key={k.NavLinkTo}>
+                                    <NavLink to={k.NavLinkTo} exact activeStyle={{color:'darkmagenta',fontSize:20}}>
+                                        <span className="NavLink-text">{k.name}</span>
+                                    </NavLink>
+                                </Menu.Item>)
+                        }
+                        </SubMenu>
+                        :
+                        <Menu.Item key={v.NavLinkTo}>
+                            <NavLink to={v.NavLinkTo}exact  activeStyle={{color:'darkmagenta',fontSize:20}}>
+                                <Icon type={v.icon}/>
+                                <span className="NavLink-text">{v.name}</span>
+                            </NavLink>
+                        </Menu.Item>
+                }))
+            }
         </Menu>
-        );
-    }else{
-        return (
-            <Menu
-            theme={"light"}
-            mode="horizontal"
-            style={{ lineHeight: '64px',paddingLeft:50,paddingRight:50}}
-            >
-            <Menu.Item key="1">
-                <NavLink to='/' exact  activeStyle={{color:'red',fontSize:20}}>
-                    <span className="NavLink-text">Home</span>
-                </NavLink>
-            </Menu.Item>
-            <Menu.Item key="2">
-                <NavLink to='/movie' exact  activeStyle={{color:'red',fontSize:20}}>
-                    <span className="NavLink-text">Movie</span>
-                </NavLink>
-            </Menu.Item>
-            <Menu.Item key="3">
-                <NavLink to='/login' exact  activeStyle={{color:'red',fontSize:20}}>
-                    <span className="NavLink-text">Login</span>
-                </NavLink>
-            </Menu.Item>
-            <Menu.Item key="4">
-                <NavLink to='/register' exact  activeStyle={{color:'red',fontSize:20}}>
-                    <span className="NavLink-text">Register</span>
-                </NavLink>
-            </Menu.Item>
-            <Menu.Item key="5">
-                <NavLink to='/about' exact  activeStyle={{color:'red',fontSize:20}}>
-                    <span className="NavLink-text">About</span>
-                </NavLink>
-            </Menu.Item>
-            <Menu.Item key="6">
-                <NavLink to='/admin/login' exact  activeStyle={{color:'red',fontSize:20}}>
-                    <span className="NavLink-text">AdminLogin</span>
-                </NavLink>
-            </Menu.Item>
-            <Menu.Item key="7">
-                <NavLink to='/admin/register' exact  activeStyle={{color:'red',fontSize:20}}>
-                    <span className="NavLink-text">AdminRegister</span>
-                </NavLink>
-            </Menu.Item>
-        </Menu>
-        );
-    }
+    );
 }
 export default Navs;

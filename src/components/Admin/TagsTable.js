@@ -1,7 +1,7 @@
 import React,{Component,createContext,Fragment} from 'react';
 import {Axios_delete,Axios_post}  from '../../api/server';
 
-import { color16 } from '../../utils/utils';
+import { color16,set_pagination } from '../../utils/utils';
 
 import { Table, Input, Button, Popconfirm,PageHeader, Form ,message as Message,Icon} from 'antd';
 
@@ -161,6 +161,7 @@ class TagsTable extends Component {
         this.state = {
             dataSource: props.tags_data,
             count: key,
+            pagination:set_pagination()
         };
     }
 
@@ -226,7 +227,7 @@ class TagsTable extends Component {
     }
 
     render() {
-        const { dataSource } = this.state;
+        const { dataSource,pagination } = this.state;
         const components = {
             body: {
                 row: EditableFormRow,
@@ -261,13 +262,15 @@ class TagsTable extends Component {
                 dataSource={dataSource}
                 columns={columns}
                 rowKey={record => record.tag_name+record.num}
+                pagination={pagination}
                 title={
                     ()=>(
                     <Button 
                         onClick={this.handleAdd}  
                         style={{ marginBottom: 16}}>
                         <Icon type="plus-circle" />添加一个标签
-                    </Button>)
+                    </Button>
+                    )
                 }
             />
         </Fragment>

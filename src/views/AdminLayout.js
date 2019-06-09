@@ -61,7 +61,7 @@ class AdminLayout extends Component {
                 >
                     <div className="face">
                         <div>
-                            <Avatar size={54} icon="user" src='https://b-ssl.duitang.com/uploads/item/201608/21/20160821230024_MyCYK.thumb.700_0.jpeg'/>
+                            <Avatar size={54} icon="user" src='http://localhost:5555/_uploads/photos/image_ylIdBn5WYztJEGeFESoSCNsJnhGvtlzi.jpg'/>
                         </div>
                         <span className={this.state.collapsed ? 'collapsed_true_face' : 'collapsed_false_face' }>
                             <span>{`你好!${window.sessionStorage.getItem('admin_name')}`}</span>
@@ -71,9 +71,7 @@ class AdminLayout extends Component {
                     <AdminNav/>
                 </Sider>
                 <Layout  className={ this.state.collapsed ? 'collapsed_t' : 'collapsed_f ' } >
-                    {/* <Header style={{ background: '#fee',width:'100%',height: 60, position: 'fixed', zIndex:1}}>
-                    </Header> */}
-                    <Content style={{ margin: '76px 16px' }}>
+                    <Content style={{ margin: '16px' }}>
                         <div style={{ padding: 24, background: '#fff', minHeight: '60vh' }}>
                             <Admin/>
                         </div>

@@ -1,46 +1,77 @@
-import { useState,useEffect} from 'react';
+import { useState,useEffect,useReducer} from 'react';
 import {Axios_server} from './serverConfig';
 
 const useDataApi = (initialUrl,initialData,initialMethod) =>{
-    const [data,set_data] = useState(initialData);
-    const [url,set_url] = useState(initialUrl);
-    const [method,set_method] = useState(initialMethod);
-    const [isLoading,set_isLoading] = useState(false);
-    const [isError,set_isError] = useState(false);
 
+    const [url,set_url] = useState(initialUrl);
+    const [method] = useState(initialMethod);
+
+    const dataFetchReducer = (state,action)=>{
+        switch(action.type){
+            case 'INIT':{
+                return {
+                    ...state,
+                    isLoading:true,
+                    isError:false
+                };
+            }
+            case 'SUCCESS':{
+                return {
+                    ...state,
+                    isLoading:false,
+                    isError:false,
+                    data:action.payload,
+                };
+            }
+            case 'ERROR':{
+                return {
+                    ...state,
+                    isLoading:false,
+                    isError:true,
+                };
+            }
+            default:
+                throw new Error();
+        }
+    };
+
+    const [state,dispatch] = useReducer(dataFetchReducer,{
+        isLoading:false,
+        isError:false,
+        data:initialData,
+    });
 
     useEffect(()=>{
+        let didCancel = false;
         const fetch_data = async ()=>{
-                set_isError(false);
-                set_isLoading(true);
+            dispatch({type:'INIT'})
                 try {
-                        // let result=data;
                         let result;
                         switch (method){
                             case 'post':
                                 {
-                                    result = await Axios_server.post(url,data);
+                                    result = await Axios_server.post(url,state.data);
                                     break;
                                 }
                                 case 'put':
                                 {
-                                    result = await Axios_server.put(url,data);
+                                    result = await Axios_server.put(url,state.data);
                                     break;
                                 }
                                 case 'patch':
                                 {
-                                    result = await Axios_server.patch(url,data);
+                                    result = await Axios_server.patch(url,state.data);
                                     break;
                                 }
                                 case 'get':
                                 {
-                                    result = await Axios_server.get(url,data);
-                                    console.log(result);
+                                    result = await Axios_server.get(url);
+                                    // console.log(result);
                                     break;
                                 }
                                 case 'delete':
                                 {
-                                    result = await Axios_server.delete(url,data);
+                                    result = await Axios_server.delete(url,state.data);
                                     break;
                                 }
                                 default:{
@@ -48,33 +79,26 @@ const useDataApi = (initialUrl,initialData,initialMethod) =>{
                                     break;
                                 }
                         };
-                        const {status,message} = result;
-                        if(status===200)
-                        {
-                            set_data(result);
-                        }else{
-                            set_data(data=>({...data,message:message}));
-                            set_isError(true);
-                        };
-                    } 
+                        if(!didCancel){
+                            dispatch({type:'SUCCESS',payload:result});
+                        }
+                } 
                 catch (error) {
-                    set_isError(true);
+                    if(!didCancel){
+                        dispatch({type:'ERROR'});
+                    }
                 }
-                set_isLoading(false);
-            };
+        };
         fetch_data();
-        },
-        [url]
-    );//当url,data,method改变才会执行第一个参数，函数
+        return () => {
+            didCancel = true;
+        };
+    },[url,method]);
+
     const doFetch_url = (url) =>{
         set_url(url);
     };
-    const doFetch_method = method=>{
-        set_method(method);
-    }
-    const doFetch_data = data =>{
-        set_data(data);
-    };
-    return {data,isLoading,isError,doFetch_url,doFetch_method,doFetch_data};
+    // console.log(state);
+    return [state, doFetch_url];
 };
 export {useDataApi};

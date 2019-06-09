@@ -14,11 +14,6 @@ function Movies({match}){
             mode="horizontal"
             style={{ lineHeight: '64px' }}
         >
-            <Menu.Item key="1">
-                <Link to={`${match.url}/tuijian`}>
-                    <span className="Link-text">推荐</span>
-                </Link>
-            </Menu.Item>
             <Menu.Item key="2">
                 <Link to={`${match.url}/yingku`}>
                     <span className="Link-text">影库</span>
@@ -45,12 +40,7 @@ function Movies({match}){
 
 function Movie({match}){
     const {movieId} = match.params;
-    if(movieId==='tuijian'){
-        return (
-            <MovieList/>
-        )
-    }
-    else if(movieId==='yingku'){
+    if(movieId==='yingku'){
         return (
             <div>
                 影库
@@ -64,9 +54,7 @@ function Movie({match}){
     }
     else{
         return (
-            <div>
-                Movie
-            </div>
+            <MovieList/>
         )
     }
 }

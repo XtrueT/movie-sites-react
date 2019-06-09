@@ -5,12 +5,7 @@ import {useDataApi} from '../../api/data_api';
 
 import TagsTable from './TagsTable';
 
-import MovieListTable from './MoviesListTable';
-
-import { Spin,PageHeader} from 'antd';
-
-
-
+import { Spin } from 'antd';
 
 
 const columns = (action) =>{
@@ -53,23 +48,14 @@ const columns = (action) =>{
 } 
 
 function AdminMovies(props){
-    // console.log(props);
-    return (
-        <>
-        <PageHeader onBack={() =>props.history.push('/admin/resources/lists')} title="Movies" subTitle="所有电影页" />
-        <MovieListTable {...props}/>
-        </>
-    )
+    return <div>Movies</div>
 }
-
 
 function AdminTrailers(props){
     return <div>Trailers</div>
 }
-
 function AdminTags(props){
-    // console.log(props);
-    const [{data,isError,isLoading}] = useDataApi(
+    const {data,isError,isLoading} = useDataApi(
         '/admin/tags',
         {  
             
@@ -89,12 +75,13 @@ function AdminTags(props){
 }
 
 function Resources(props){
+
     const {action} = props.match.params;
     const _columns = columns(action);
-    if(action==='movies'){
-        return <AdminMovies {...props}/>
+    if(action==='lists'){
+        return <AdminMovies log_columns={_columns} />
     }else if(action==='trailers'){
-        return <AdminTrailers log_columns={_columns} {...props}/>
+        return <AdminTrailers log_columns={_columns}/>
     }else if(action ==='tags'){
         // return <AdminTags log_columns={_columns}{...props}/>
         return <AdminTags {...props}/>

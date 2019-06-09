@@ -3,6 +3,7 @@ import {Route,Switch,Redirect} from 'react-router-dom';
 
 import AuthRouter from '../Auth/AuthRouter';
 import Logs from './Logs';
+import AddMovie from './AddMovie';
 import Resources from './Resources';
 import Error from '../Home/Error';
 
@@ -10,8 +11,9 @@ const Admin = ()=>{
     return (
         <Switch>
         <Route path="/admin" exact component={()=>(<div>adminHome</div>)}/>
-        <AuthRouter path="/admin/movies/:action" exact component ={Resources}/>
-        <AuthRouter path="/admin/logs/:role" exact component ={Logs}/>
+        <AuthRouter path="/admin/resources/:action" exact component ={Resources}/>
+        <AuthRouter path='/admin/resources/movies/add' extra component={AddMovie}/>
+        <AuthRouter path="/admin/:role/logs" exact component ={Logs}/>
         {/* 登录权限控制组件 */}
         <AuthRouter path="/admin/users/:action" exact component ={()=>(<div>adminUser</div>)}/>
         <AuthRouter path="/admin/change_password" exact component={()=>(<div>change_password</div>)}/>

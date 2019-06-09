@@ -4,13 +4,14 @@ import { Upload, Icon, message as Message, Modal ,Button} from 'antd';
 
 import {check_isImage} from '../../utils/utils';
 
-class UploadFace extends Component {
+class UploadMovie extends Component {
     constructor(props){
         super(props);
         this.state = {
             loading: false,
             previewVisible:false,
-            user_img:props.user_img,
+            cover_img:'',
+            isUploadsuc:false,
             fileList: []
         }
     };
@@ -20,10 +21,10 @@ class UploadFace extends Component {
         const { fileList } = this.state;
         const formData = new FormData();
         const auth_token = " Flask " + window.sessionStorage.access_token;
-        const upload_url = 'http://localhost:5555/profile/change';
+        const upload_url = 'http://localhost:5555/admin/upload/cover_img';
         fileList.forEach((file)=>{
-            formData.append('user_img',file);
-            console.log(file);
+            formData.append('cover_img',file);
+            // console.log(file);
             file.status = 'uploading';
             this.setState({
                 fileList,
@@ -36,7 +37,7 @@ class UploadFace extends Component {
                 },
                 onUploadProgress:ProgressEvent=>{
                     const complete = (ProgressEvent.loaded/ ProgressEvent.total*100|0);
-                    console.log(complete);
+                    // console.log(complete);
                     file.percent = complete;
                     this.setState({
                         fileList,
@@ -48,16 +49,19 @@ class UploadFace extends Component {
                 formData,
                 config
             ).then(res=>{
-                const {status,message} = res.data;
-                const {data:{user_img}} = res.data;
+                const {status,message,data} = res.data;
+                const cover_img = data;
                 if(status===200){
                     file.status = 'success';
-                    file.thumbUrl = user_img;
+                    file.thumbUrl = cover_img;
                     this.setState({
                         loading:false,
                         fileList,
+                        isUploadsuc:true,
                     });
-                    this.props.set_isUpload(true);
+                    console.log(cover_img);
+                    // this.props.set_isUpload(true);
+                    this.props.form.setFieldsValue({cover_img: cover_img});
                     Message.success(message);
                 }else{
                     file.status = 'error';
@@ -86,13 +90,15 @@ class UploadFace extends Component {
         }
         );
     };
+
+    handleClick = () => this.setState({ previewVisible: true });
     
     render(){
-        const  {user_img,previewVisible,loading,fileList} = this.state;
+        const  {cover_img,previewVisible,loading,fileList,isUploadsuc} = this.state;
         const upload_props = {
             onPreview: (file) => {
                 this.setState({
-                    user_img: file.thumbUrl,
+                    cover_img: file.thumbUrl,
                     previewVisible: true,
                 });
             },
@@ -109,15 +115,22 @@ class UploadFace extends Component {
             },
             beforeUpload: file=> {
                 if( check_isImage(file)){
-                    const r = new FileReader();
-                    r.readAsDataURL(file);
-                    r.onload = e => {
-                        file.thumbUrl = e.target.result;
-                        this.setState(state => ({
-                            fileList: [...state.fileList, file],
-                            })
-                        );
-                    };
+                    // const r = new FileReader();
+                    const url = URL.createObjectURL(file);
+                    console.log(url);
+                    // r.readAsDataURL(file);
+                    // r.onload = e => {
+                    //     file.thumbUrl = e.target.result;
+                    //     this.setState(state => ({
+                    //         fileList: [...state.fileList, file],
+                    //         })
+                    //     );
+                    // };
+                    file.thumbUrl = url;
+                    this.setState(state => ({
+                        fileList: [...state.fileList, file],
+                        })
+                    );
                 }
                 return false;
             },
@@ -131,21 +144,24 @@ class UploadFace extends Component {
             </div>
         );
         const footer = (
-            <Button key="submit" type="primary" disabled={fileList.length === 0} loading={loading} onClick={this.handleOk}>
+            <p>
+                <Button key="submit" type="primary" disabled={fileList.length === 0} loading={loading} onClick={this.handleOk}>
                 {loading ? '正在上传' : '开始上传 '}
-            </Button>
+                </Button>
+            </p>
         );
         return (
             <Fragment>
                 <Upload {...upload_props}>
                         {fileList.length >= 1 ? null : uploadButton}
                 </Upload> 
-                {footer}
+                {/* {footer} */}
+                {fileList.length >= 1 && !isUploadsuc ? footer : null}
                 <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-                    <img alt="user_img" style={{ width: '100%' }} src={user_img} />
+                    <img alt="cover_img" style={{ width: '100%' }} src={cover_img} />
                 </Modal>
             </Fragment>
         );
     }
 }
-export default UploadFace;
+export default UploadMovie;

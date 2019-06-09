@@ -12,6 +12,7 @@ import Login from '../components/Home/Login';
 import Register from '../components/Home/Register';
 import Movie from '../components/Movie/Movie';
 import Profile from '../components/User/Profile';
+import PlayMovie from '../components/Movie/PlayMovie';
 
 import {Layout} from 'antd';
 
@@ -63,6 +64,7 @@ class UserLayout extends Component {
                             <Route path="/register" exact component ={Register}/>
                             <Route path="/admin/register" exact component ={Register}/>
                             <Route path="/forgot_password" exact component ={()=>(<div>forgot_password</div>)}/>
+                            <Route path="/movies/:id"  component ={PlayMovie}/>
                             {/* 登录权限控制组件 */}
                             <AuthRouter path="/profile"  component ={Profile}/>
                             <AuthRouter path="/change_password" exact component={()=>(<div>change_password</div>)}/>

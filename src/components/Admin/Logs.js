@@ -1,7 +1,8 @@
 import React from 'react';
 import {Redirect} from 'react-router-dom';
 import {useDataApi} from '../../api/data_api';
-import { Table} from 'antd';
+import { Table ,message as Message} from 'antd';
+import { set_pagination } from '../../utils/utils';
 
 const columns = (role) =>{
     let log_columns = [
@@ -30,7 +31,7 @@ const columns = (role) =>{
             sorter: (a, b) => (Date.parse(a.add_time) - Date.parse(b.add_time) ),
         },
     ];
-    if(role==='op_logs'){
+    if(role==='op'){
         log_columns.push({
             title: '操作',
             key: 'reason',
@@ -43,8 +44,8 @@ const columns = (role) =>{
 } 
 
 function AdminLogs(props){
-    const {data,isError,isLoading} = useDataApi(
-        '/admin/admin_logs/logs',
+    const [state] = useDataApi(
+        '/admin/admin/logs',
         {  
             
                 'message':'',
@@ -53,11 +54,11 @@ function AdminLogs(props){
         },
         'get'
     );
-
+    const {data,isError,isLoading} = state;
     const {message} = data;
     const logs = data.data;
     if(isError){
-        return (<div>{message}</div>)
+        return (Message.error(message))
     }
     return (
         <Table
@@ -68,14 +69,15 @@ function AdminLogs(props){
         loading={isLoading}
         showHeader={true}
         bordered
+        pagination={set_pagination()}
         title={() => '管理员登录日志'}
         />
     )
 }
 
 function UserLogs(props){
-    const {data,isError,isLoading} = useDataApi(
-        '/admin/user_logs/logs',
+    const [state] = useDataApi(
+        '/admin/user/logs',
         {  
             
                 'message':'',
@@ -84,11 +86,11 @@ function UserLogs(props){
         },
         'get'
     );
-
+    const {data,isError,isLoading} = state
     const {message} = data;
     const logs = data.data;
     if(isError){
-        return (<div>{message}</div>)
+        return (Message.error(message))
     }
     return (
         <Table
@@ -97,14 +99,15 @@ function UserLogs(props){
         rowKey={record => record.num} 
         loading={isLoading}
         showHeader={true}
+        pagination={set_pagination()}
         bordered
         title={() => '用户登录日志'}
         />
     )
 }
 function OpLogs(props){
-    const {data,isError,isLoading} = useDataApi(
-        '/admin/op_logs/logs',
+    const [state] = useDataApi(
+        '/admin/op/logs',
         {  
             
                 'message':'',
@@ -113,10 +116,11 @@ function OpLogs(props){
         },
         'get'
     );
+    const {data,isError,isLoading} = state;
     const {message} = data;
     const logs = data.data;
     if(isError){
-        return (<div>{message}</div>)
+        return (Message.error(message))
     }
     return (
         <Table
@@ -125,25 +129,24 @@ function OpLogs(props){
         rowKey={record => record.num} 
         loading={isLoading}
         showHeader={true}
+        pagination={set_pagination()}
         bordered
         title={() => '管理员操作日志'}
         />
     )
 }
 function Logs(props){
-
     const {role} = props.match.params;
     const _columns = columns(role);
-    if(role==='admin_logs'){
+    if(role==='admin'){
         return <AdminLogs log_columns={_columns}/>
-    }else if(role==='user_logs'){
+    }else if(role==='user'){
         return <UserLogs log_columns={_columns}/>
-    }else if(role==='op_logs'){
+    }else if(role==='op'){
         return <OpLogs log_columns={_columns}/>
     }else{
         return <Redirect to ='/admin'/>
     }
 }
-
 
 export default Logs;

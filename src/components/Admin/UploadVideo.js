@@ -2,28 +2,30 @@ import  React ,{Component, Fragment} from 'react';
 import axios from 'axios';
 import { Upload, Icon, message as Message, Modal ,Button} from 'antd';
 
-import {check_isImage} from '../../utils/utils';
+import {check_isVideo} from '../../utils/utils';
 
-class UploadFace extends Component {
+class UploadMovie extends Component {
     constructor(props){
         super(props);
         this.state = {
             loading: false,
             previewVisible:false,
-            user_img:props.user_img,
+            movie:'',
+            movie_length:'',
+            isUploadsuc:false,
             fileList: []
         }
     };
 
     //上传file
     handleOk = ()=>{
-        const { fileList } = this.state;
+        const { fileList,movie_length} = this.state;
         const formData = new FormData();
         const auth_token = " Flask " + window.sessionStorage.access_token;
-        const upload_url = 'http://localhost:5555/profile/change';
+        const upload_url = 'http://localhost:5555/admin/upload/movie';
         fileList.forEach((file)=>{
-            formData.append('user_img',file);
-            console.log(file);
+            formData.append('movie',file);
+            // console.log(file);
             file.status = 'uploading';
             this.setState({
                 fileList,
@@ -36,7 +38,7 @@ class UploadFace extends Component {
                 },
                 onUploadProgress:ProgressEvent=>{
                     const complete = (ProgressEvent.loaded/ ProgressEvent.total*100|0);
-                    console.log(complete);
+                    // console.log(complete);
                     file.percent = complete;
                     this.setState({
                         fileList,
@@ -48,16 +50,21 @@ class UploadFace extends Component {
                 formData,
                 config
             ).then(res=>{
-                const {status,message} = res.data;
-                const {data:{user_img}} = res.data;
+                const {status,message,data} = res.data;
+                const movie = data;
                 if(status===200){
                     file.status = 'success';
-                    file.thumbUrl = user_img;
+                    file.thumbUrl = movie;
                     this.setState({
                         loading:false,
                         fileList,
+                        isUploadsuc:true,
                     });
-                    this.props.set_isUpload(true);
+                    console.log(movie);
+                    // this.props.set_isUpload(true);
+                    this.props.form.setFieldsValue({movie: movie});
+                    console.log(movie_length);
+                    this.props.form.setFieldsValue({movie_length:movie_length});
                     Message.success(message);
                 }else{
                     file.status = 'error';
@@ -86,13 +93,14 @@ class UploadFace extends Component {
         }
         );
     };
+
+    handleClick = () => this.setState({ previewVisible: true });
     
     render(){
-        const  {user_img,previewVisible,loading,fileList} = this.state;
+        const  {movie,previewVisible,loading,fileList,isUploadsuc} = this.state;
         const upload_props = {
             onPreview: (file) => {
                 this.setState({
-                    user_img: file.thumbUrl,
                     previewVisible: true,
                 });
             },
@@ -108,16 +116,31 @@ class UploadFace extends Component {
                 });
             },
             beforeUpload: file=> {
-                if( check_isImage(file)){
-                    const r = new FileReader();
-                    r.readAsDataURL(file);
-                    r.onload = e => {
-                        file.thumbUrl = e.target.result;
-                        this.setState(state => ({
+                if( check_isVideo(file)){
+                    // const r = new FileReader();
+                    const url = URL.createObjectURL(file);
+                    console.log(url);
+                    const audioElement = new Audio(url);
+                    let duration;
+                    const callback=(time)=>{
+                        // formatSeconds(time);
+                        this.setState({
+                            movie_length:time,
+                            movie: file.thumbUrl,
+                        })
+                    }
+                    audioElement.addEventListener("loadedmetadata", function (_event) {
+                        duration = audioElement.duration;
+                        //length
+                        console.log(duration);
+                        callback(duration);
+                    });
+                    file.thumbUrl = url;
+                    // console.log(file);
+                    this.setState(state => ({
                             fileList: [...state.fileList, file],
-                            })
-                        );
-                    };
+                    })
+                    );
                 }
                 return false;
             },
@@ -131,21 +154,23 @@ class UploadFace extends Component {
             </div>
         );
         const footer = (
+            <p>
             <Button key="submit" type="primary" disabled={fileList.length === 0} loading={loading} onClick={this.handleOk}>
                 {loading ? '正在上传' : '开始上传 '}
             </Button>
+            </p>
         );
         return (
             <Fragment>
                 <Upload {...upload_props}>
                         {fileList.length >= 1 ? null : uploadButton}
-                </Upload> 
-                {footer}
-                <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-                    <img alt="user_img" style={{ width: '100%' }} src={user_img} />
+                </Upload>
+                {fileList.length >= 1 && !isUploadsuc? footer : null}
+                <Modal visible={previewVisible} footer={null} destroyOnClose={true} onCancel={this.handleCancel}>
+                    <video alt="movie" style={{ width: '100%' }} src={movie} controls="controls"/>
                 </Modal>
             </Fragment>
         );
     }
 }
-export default UploadFace;
+export default UploadMovie;

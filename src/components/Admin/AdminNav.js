@@ -3,7 +3,7 @@ import { Menu, Icon } from 'antd';
 import { NavLink,withRouter} from 'react-router-dom'
 import { navMenus } from '../../utils/utils';
 
-const { SubMenu, Item} = Menu;
+const { SubMenu} = Menu;
 
 const {admin_menus} = navMenus();
 

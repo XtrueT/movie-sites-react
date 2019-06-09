@@ -4,7 +4,7 @@ import {Avatar} from 'antd';
 import { isLogin } from '../../utils/utils';
 
 function Face(props){
-    const {data,isError}=useDataApi(
+    const [{data,isError}]=useDataApi(
         '/profile',
         {
             'data':{

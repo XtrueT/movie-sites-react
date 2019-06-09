@@ -1,5 +1,70 @@
 import jwt_decode from 'jwt-decode'
 
+import {message as Message} from 'antd';
+
+function check_isImage(file) {
+    let isImage = false;
+    const file_type = ['image/jpeg','image/png'];
+    if(file.type){
+        if (file_type.includes(file.type) ){
+            isImage = true;
+        };
+    };
+    if (!isImage) {
+        Message.error('只能上传图片');
+    };
+    const isLt5M = file.size / 1024 / 1024 < 5;
+    if (!isLt5M) {
+        Message.error('图片最大为 5MB!');
+    };
+    return isImage && isLt5M ;
+}
+
+function check_isVideo(file) {
+    let isVideo = false;
+    const file_type = ['video/mp4'];
+    if(file.type){
+        if (file_type.includes(file.type) ){
+            isVideo = true;
+        };
+    };
+    if (!isVideo) {
+        Message.error('只能上传视频文件');
+    };
+    const isLt50000M = file.size / 1024 / 1024 < 50000;
+    if (!isLt50000M) {
+        Message.error(`文件最大为${50000}`);
+    };
+    return isVideo && isLt50000M ;
+}
+
+function formatSeconds(value) {
+    var secondTime = parseInt(value);// 秒
+    var minuteTime = 0;// 分
+    var hourTime = 0;// 小时
+    if(secondTime > 60) {//如果秒数大于60，将秒数转换成整数
+        //获取分钟，除以60取整数，得到整数分钟
+        minuteTime = parseInt(secondTime / 60);
+        //获取秒数，秒数取佘，得到整数秒数
+        // console.log(minuteTime)
+        secondTime = parseInt(secondTime % 60);
+        //如果分钟大于60，将分钟转换成小时
+        if(minuteTime > 60) {
+            //获取小时，获取分钟除以60，得到整数小时
+            hourTime = parseInt(minuteTime / 60);
+            //获取小时后取佘的分，获取分钟除以60取佘的分
+            minuteTime = parseInt(minuteTime % 60);
+        }
+    }
+    if(minuteTime > 0 && !hourTime) {
+        return `${minuteTime}分${secondTime}`;
+    }
+    if(hourTime > 0) {
+        return `${hourTime}小时${minuteTime}分${secondTime}`;
+    }
+    return `${secondTime}秒`;
+}
+
 //十六进制颜色随机
 function color16(){
     var r = Math.floor(Math.random()*256);
@@ -35,7 +100,6 @@ const isLogin = ()=>{
 
 const navMenus = ()=>{
     const menus={
-    
     admin_menus:[
     {
         key: '/',
@@ -45,25 +109,25 @@ const navMenus = ()=>{
         subMenu:null,
     },
     {
-        key: '/admin/movies/lists',
+        key: '/admin/resources/lists',
         name: '资源管理',
         icon:'bars',
-        NavLinkTo: '/admin/movies/lists',
+        NavLinkTo: '/admin/resources/lists',
         subMenu: [
         {
-            key: 'movies/lists',
+            key: 'resources/lists',
             name: '电影管理',
-            NavLinkTo: '/admin/movies/lists',
+            NavLinkTo: '/admin/resources/movies',
         },
         {
-            key: 'movies/trailers',
+            key: 'resources/trailers',
             name: '预告管理',
-            NavLinkTo: '/admin/movies/trailers',
+            NavLinkTo: '/admin/resources/trailers',
         },
         {
-            key: 'movies/tags',
+            key: 'resources/tags',
             name: '标签管理',
-            NavLinkTo: '/admin/movies/tags',
+            NavLinkTo: '/admin/resources/tags',
         },
         ]
     },
@@ -99,24 +163,93 @@ const navMenus = ()=>{
         {
             key: 'logs/user_logs',
             name: '用户日志管理',
-            NavLinkTo: '/admin/logs/user_logs',
+            NavLinkTo: '/admin/user/logs',
         },
         {
             key: 'logs/admin_logs',
             name: '管理员日志管理',
-            NavLinkTo: '/admin/logs/admin_logs',
+            NavLinkTo: '/admin/admin/logs',
         },
         {
             key: 'logs/op_logs',
             name: '管理员操作日志管理',
-            NavLinkTo: '/admin/logs/op_logs',
+            NavLinkTo: '/admin/op/logs',
         },
         ]
     },
     ],
+
+    user_menus:[
+        {
+            key: '/',
+            name: 'Home',
+            icon:'home',
+            NavLinkTo: '/',
+            subMenu:null,
+        },
+        {
+            key: '/movie',
+            name: 'Movie',
+            icon:'bars',
+            NavLinkTo: '/movie',
+            subMenu: null,
+        },
+        {
+            key: '/about',
+            name: 'About',
+            icon: 'exception',
+            NavLinkTo: '/about',
+            subMenu:null
+        },
+        ],
+    isLogged:[
+        {
+            key: '/profile',
+            name: 'Profile',
+            icon:'idcard',
+            NavLinkTo: '/profile',
+            subMenu: null
+        },
+    ],
+    notLogged:[
+        {
+            key: '/Login',
+            name: 'Login',
+            icon: 'exception',
+            NavLinkTo: '/login',
+            subMenu:[
+                {
+                    key: 'Register',
+                    name: 'Register',
+                    NavLinkTo: '/register',
+                },
+                {
+                    key: 'admin/login',
+                    name: 'AdminLogin',
+                    NavLinkTo: '/admin/login',
+                },
+                {
+                    key: 'admin/register',
+                    name: 'AdminRegister',
+                    NavLinkTo: '/admin/register',
+                },
+            ]
+        },
+    ]
     }
-    
     return menus;
 }
 
-export {isLogin,color16,navMenus};
+const set_pagination = ()=>{
+
+    const pagination={
+        pageSize:5,
+        pageSizeOptions:['5','10','20'],
+        hideOnSinglePage:true,
+        showSizeChanger:true,
+    }
+
+    return pagination;
+}
+
+export {isLogin,color16,navMenus,set_pagination,check_isImage,check_isVideo,formatSeconds};

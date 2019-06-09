@@ -8,7 +8,7 @@ const {Meta} =Card;
 
 function Profile(){
     const [visible,setVisible] = useState(false)
-    const {data,isError,isLoading}=useDataApi(
+    const [{data,isError,isLoading}]=useDataApi(
         '/profile',
         {
             'data':{
