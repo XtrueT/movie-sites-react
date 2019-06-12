@@ -3,8 +3,8 @@ import {useDataApi} from '../../api/data_api';
 import {Avatar} from 'antd';
 import { isLogin } from '../../utils/utils';
 
-function Face(props){
-    const [{data,isError}]=useDataApi(
+function Face(){
+    const [state]=useDataApi(
         '/profile',
         {
             'data':{
@@ -14,10 +14,11 @@ function Face(props){
         },
         'get'
     )
-    if(isError&&isLogin()){
+    const {data,isError} = state;
+    const {data:{user_name,user_img}} = data;
+    if(isError && isLogin()){
         return <span>something wrong...</span>;
     }else{
-        const {data:{user_name,user_img}} = data;
         return(
             <div>
                 <Avatar size='large' icon="user" src={user_img}/>

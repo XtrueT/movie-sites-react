@@ -2,7 +2,7 @@ import React, {Fragment,useState} from 'react';
 import {Route,Link} from 'react-router-dom';
 import {useDataApi} from '../../api/data_api';
 import ChangeProfile from './ChangeProfile';
-import {Avatar,Icon,Card,Button} from 'antd';
+import {Avatar,Icon,Card,Button,Spin} from 'antd';
 
 const {Meta} =Card;
 
@@ -33,7 +33,7 @@ function Profile(){
     return(
         <Fragment>
         {isLoading ? (
-            <div>Loading ...</div>
+            <Spin className='login-form'/>
             ) : (
             <Fragment>
                 <Route path='/profile/change'  component={
@@ -53,7 +53,7 @@ function Profile(){
                 }/>
                 <Card
                     style={{width:860,marginLeft:'auto',marginRight:'auto',textAlign:'left'}}
-                    title={user_name+" 的个人信息"}
+                    title={user_name +" 的个人信息"}
                     extra={
                         <Link to='/profile/change' onClick={()=>(setVisible(true))}>
                             <Button><Icon type="edit" /> Edit</Button>

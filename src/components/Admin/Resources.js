@@ -96,7 +96,6 @@ function Resources(props){
     }else if(action==='trailers'){
         return <AdminTrailers log_columns={_columns} {...props}/>
     }else if(action ==='tags'){
-        // return <AdminTags log_columns={_columns}{...props}/>
         return <AdminTags {...props}/>
     }else{
         return <Redirect to ='/admin'/>

@@ -1,6 +1,6 @@
 import  React ,{Component, Fragment} from 'react';
 import axios from 'axios';
-import { Upload, Icon, message as Message, Modal ,Button} from 'antd';
+import { Upload, message as Message, Modal ,Button} from 'antd';
 
 import {check_isImage} from '../../utils/utils';
 
@@ -89,6 +89,7 @@ class UploadFace extends Component {
     
     render(){
         const  {user_img,previewVisible,loading,fileList} = this.state;
+        
         const upload_props = {
             onPreview: (file) => {
                 this.setState({
@@ -104,6 +105,7 @@ class UploadFace extends Component {
                     return {
                         fileList: newFileList,
                         loading:false,
+                        user_img:this.props.user_img
                     };
                 });
             },
@@ -124,12 +126,6 @@ class UploadFace extends Component {
             fileList,
             listType:"picture-card",
         };
-        const uploadButton = (
-            <div>
-                <Icon type={loading ? 'loading' : 'plus'} />
-                <div className="ant-upload-text">Upload</div>
-            </div>
-        );
         const footer = (
             <Button key="submit" type="primary" disabled={fileList.length === 0} loading={loading} onClick={this.handleOk}>
                 {loading ? '正在上传' : '开始上传 '}
@@ -138,7 +134,7 @@ class UploadFace extends Component {
         return (
             <Fragment>
                 <Upload {...upload_props}>
-                        {fileList.length >= 1 ? null : uploadButton}
+                        {fileList.length >= 1 ? null : <img alt="user_img" style={{ width: '100%' }} src={user_img} />}
                 </Upload> 
                 {footer}
                 <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {message as Message} from 'antd';
 //创建axios实例
 let Axios_server = axios.create({
     timeout:1500 ,//请求超时时间
@@ -22,6 +23,7 @@ Axios_server.interceptors.request.use(
             console.log(error.request.data);
             let {message} = error.request.data;
             // alert(message);
+            Message.error(message);
             console.log(message);
             return error.request.data;
         }
@@ -59,6 +61,7 @@ Axios_server.interceptors.response.use(
             let {message} = error.response.data;
             if(message==='无效token,请重新登录'){
                 // alert(message);
+                Message.error(message);
                 window.sessionStorage.removeItem('access_token');
                 if(window.sessionStorage.getItem('admin_name')){
                     window.sessionStorage.removeItem('admin_name');

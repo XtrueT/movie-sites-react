@@ -1,55 +1,33 @@
 import React, {Fragment} from 'react';
-import {Route,Link} from 'react-router-dom';
+import {Route,NavLink} from 'react-router-dom';
 // import Comments from './Comments';
 import Tags from './Tags';
 import MovieList from './MovieList';
-import {Menu ,Layout} from 'antd';
+import {Menu,Layout} from 'antd';
 
-const {Content}=Layout;
+const {Content,Header}=Layout;
 
 function Movies({match}){
-    const menu = (
-        <Menu
-            theme={"light"}
-            mode="horizontal"
-            style={{ lineHeight: '64px' }}
-        >
-            <Menu.Item key="2">
-                <Link to={`${match.url}/yingku`}>
-                    <span className="Link-text">影库</span>
-                </Link>
-            </Menu.Item>
-            <Menu.Item key="3">
-                <Link to={`${match.url}/search`}>
-                        <span className="Link-text">搜索</span>
-                </Link>
-            </Menu.Item>
-        </Menu>
-    );
     return(
         <Fragment>
-                {menu}
+            <Header> 
+                <NavLink to={`${match.url}/search`} style={{float:'right'}} activeStyle={{color:'darkmagenta',fontSize:20}}>
+                        <span className="Link-text">查看分类</span>
+                </NavLink>
+            </Header>
             <Content>
                 <Route path={`${match.path}/:movieId`} component={Movie}/>
                 <Route exact path={match.path} component={Movie}/>
             </Content>
         </Fragment>
-        
     )
 }
 
 function Movie({match}){
     const {movieId} = match.params;
-    if(movieId==='yingku'){
+    if(movieId==='search'){
         return (
-            <div>
-                影库
-            </div>
-        )
-    }
-    else if(movieId==='search'){
-        return (
-            <Tags/>
+            <Tags {...match}/>
         )
     }
     else{

@@ -1,13 +1,17 @@
-import React ,{Fragment,useState} from 'react';
+import React ,{Fragment,useState,useEffect} from 'react';
 import {Link} from 'react-router-dom';
-import {Card,Col,Row,List,Button} from 'antd';
+
 import { useDataApi } from '../../api/data_api';
 import { formatSeconds } from '../../utils/utils';
 
+import {Card,Col,Row,List,Button} from 'antd';
+
 const {Meta}=Card;
 
-function MovieList(){
-    const [get_movie,set_get_movie]=useState('1/6');
+function MovieList(props){
+
+    const [get_movie,set_get_movie]=useState('1/4');
+    const [change,set_change]=useState(false);
     const [state,doFetch_url] = useDataApi(
         `/movies/${get_movie}`,
         {
@@ -22,34 +26,48 @@ function MovieList(){
         },
         'get'
     );
-
     const {data,isError,isLoading} = state;
     const {data:{total,page,page_size,list}}=data;
     const {message} = data;
+
+    useEffect(()=>{
+        if(change){
+            doFetch_url(`${props.url||''}/movies/${get_movie}`);
+        }
+        if(props.url!=='/tag/all'){
+            doFetch_url(`${props.url||''}/movies/${get_movie}`);
+        }else{
+            doFetch_url(`/movies/${get_movie}`);
+        }
+        
+    },[change,doFetch_url,get_movie,props]
+    )
     if(isError){
         return (<div>{message}</div>)
     }
+    const onLoadMore=(
+        !isLoading && total!==page? (
+            <div style={{textAlign:'center',marginTop:30}}>
+            <p>
+                <Button 
+                onClick={()=>{
+                    set_get_movie(`1/${page_size+4}`);
+                    set_change(true);
+                }}>加载更多
+                </Button>
+            </p></div>
+            ) :null
+            
+    )
     return(
     <Fragment>
-    <Row gutter={24}>
+    <Row gutter={{xs: 8, sm: 16, md: 24, lg: 32}}>
         <List
         loading={isLoading}
-        // itemLayout='horizontal'
-        size="large"
-        pagination={{
-        onChange: page => {
-            console.log(page);
-            set_get_movie(`page.current/page.pageSize`);
-        },
-        pageSize: page_size,
-        total:total,
-        hideOnSinglePage:true,
-        current:page,
-        }}
-        // loadMore={()=>{set_get_movie(`${page}/${page_size+3}`)}}
+        loadMore={onLoadMore}
         dataSource={list}
         renderItem={item => (
-        <Col span={8}>
+        <Col   xs={24} sm={12} md={6} lg={6} xl={6} >
         <List.Item key={item.id}>
             <Card
                 className='card'
@@ -66,8 +84,7 @@ function MovieList(){
                 }
             >
             <Meta
-            title={<Button type='link'>电影《{item.title}》</Button>}
-            description={<span style={{}}>所属分类：{item.tag_id} 片长：{formatSeconds(item.movie_length)}</span>}
+            title={`《${item.title}》`}
             />
             <div className='p_text'>
             <Link to={`/movies/${item.id}`}>
@@ -76,14 +93,14 @@ function MovieList(){
                 style={{marginTop:"50%",width:'50%',height:"50%"}}
                 src='http://localhost:5555/_uploads/photos/image_cDv7StYsKylcd9wNVsP9wdYeKcetwNs7.png'/>
                 </p>
+            </Link>
             <p>上映地区：{item.area}</p>
             <p>上映时间：{item.release_time}</p>
-            </Link>
+            <p><span style={{textAlign:'left'}}>所属分类：{item.tag_id} 片长：{formatSeconds(item.movie_length)}</span></p>
             </div>
         </Card>
         </List.Item>
         </Col>
-            
         )}
     />
     </Row>

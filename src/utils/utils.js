@@ -194,14 +194,8 @@ const navMenus = ()=>{
             NavLinkTo: '/movie',
             subMenu: null,
         },
-        {
-            key: '/about',
-            name: 'About',
-            icon: 'exception',
-            NavLinkTo: '/about',
-            subMenu:null
-        },
-        ],
+    ],
+    
     isLogged:[
         {
             key: '/profile',
@@ -211,6 +205,7 @@ const navMenus = ()=>{
             subMenu: null
         },
     ],
+    
     notLogged:[
         {
             key: '/Login',
@@ -235,6 +230,13 @@ const navMenus = ()=>{
                 },
             ]
         },
+        {
+            key: '/about',
+            name: 'About',
+            icon: 'exception',
+            NavLinkTo: '/about',
+            subMenu:null
+        },
     ]
     }
     return menus;
@@ -243,8 +245,8 @@ const navMenus = ()=>{
 const set_pagination = ()=>{
 
     const pagination={
-        pageSize:5,
-        pageSizeOptions:['5','10','20'],
+        pageSize:10,
+        pageSizeOptions:['15','20'],
         hideOnSinglePage:true,
         showSizeChanger:true,
     }

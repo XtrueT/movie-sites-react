@@ -14,7 +14,9 @@ function Navs(props){
     useEffect(
         ()=>{
             window.addEventListener("popstate",set_selectKey([props.history.location.pathname]));
-        },[props]
+        return ()=>{
+            window.removeEventListener("popstate",set_selectKey([props.history.location.pathname]));
+        }},[props]
     )
     
     const {isLogin} = props.nav;
@@ -55,8 +57,8 @@ function Navs(props){
                         </Menu.Item>
                 })
             }
-            {isLogin?(
-                isLogged.map(v => {
+            {isLogin ?(
+                [isLogged.map(v => {
                     return v.subMenu?
                         <SubMenu 
                             key={v.key} 
@@ -77,15 +79,16 @@ function Navs(props){
                         </SubMenu>
                         :
                         <Menu.Item key={v.NavLinkTo}>
-                            <NavLink to={v.NavLinkTo}exact  activeStyle={{color:'darkmagenta',fontSize:20}}>
+                            <NavLink to={v.NavLinkTo} exact  activeStyle={{color:'darkmagenta',fontSize:20}}>
                                 <Icon type={v.icon}/>
                                 <span className="NavLink-text">{v.name}</span>
                             </NavLink>
                         </Menu.Item>
                 }),
                 <SubMenu
+                    key='face'
                     title={
-                        <Face/>
+                        <Face/>||null
                     }
                     style={{width:100,right:100,display:'inline-block',position:'fixed'}}
                 >
@@ -117,7 +120,8 @@ function Navs(props){
                                 Logout
                             </Link>
                     </Menu.Item>
-                </SubMenu>):
+                </SubMenu>]
+                ):
                 (notLogged.map(v => {
                     return v.subMenu?
                         <SubMenu 
