@@ -77,6 +77,10 @@ Axios_server.interceptors.response.use(
             //     window.sessionStorage.removeItem('access_token');
             // }
             // console.log(error.request);
+            if(error.request.status===0){
+                Message.error("连接超时或没有该资源",3);
+                // window.location.pathname='/error';
+            }
             return Promise.reject(error.request);
         }
     }

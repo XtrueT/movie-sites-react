@@ -230,13 +230,6 @@ const navMenus = ()=>{
                 },
             ]
         },
-        {
-            key: '/about',
-            name: 'About',
-            icon: 'exception',
-            NavLinkTo: '/about',
-            subMenu:null
-        },
     ]
     }
     return menus;

@@ -107,3 +107,25 @@
     text-align: center;
     font-size: 20px;
 }
+.search-ol{
+    background-color: rgb(241, 240, 240);
+}
+.search-ol li{
+    display:block;
+    margin-bottom: 2px;
+    height: 30px;
+}
+.search-ol a{
+    line-height: 16px;
+    color: #000;
+}
+.search-ol li:hover{
+    background-color: #ccc;
+}
+.comment-list{
+    text-align: left;
+    margin: 10px 10px 10px 10px;
+    color: #000;
+    background-color: rgb(252, 252, 252);
+    border-bottom: #364d79 1px solid;
+}

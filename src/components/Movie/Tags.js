@@ -1,4 +1,4 @@
-import React ,{Fragment,useState,useEffect} from 'react';
+import React ,{Fragment,useState} from 'react';
 import {useDataApi} from '../../api/data_api';
 import {Tag} from 'antd';
 import MovieList from './MovieList';
@@ -35,7 +35,7 @@ function Tags(match){
     }
     return (
         <Fragment>
-            <h3 style={{marginRight:8,display:'inline'}}>分类</h3>
+            <h2 style={{marginRight:8,display:'inline'}}>分类</h2>
                 {tags.map(tag=>{
                     return (
                         <CheckableTag

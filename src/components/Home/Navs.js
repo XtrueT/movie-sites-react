@@ -4,8 +4,10 @@ import {Axios_delete} from '../../api/server';
 import {navMenus} from '../../utils/utils';
 import Face from '../User/Face';
 import {Menu,message as Message,Icon} from 'antd';
+import SearchForm from './SearchForm';
 
 const SubMenu = Menu.SubMenu;
+
 const {user_menus,isLogged,notLogged} = navMenus();
 function Navs(props){
     // console.log(props);
@@ -150,6 +152,15 @@ function Navs(props){
                         </Menu.Item>
                 }))
             }
+            <Menu.Item 
+                key="Search"
+                style={{
+                    marginLeft:300,
+                    width:300
+                }}
+            >
+                <SearchForm/>
+            </Menu.Item>
         </Menu>
     );
 }

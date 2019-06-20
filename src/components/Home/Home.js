@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import MovieList from '../Movie/MovieList';
 import AllComments from '../Comment/AllComments';
-import { Carousel,BackTop } from 'antd';
+import { Carousel,BackTop,PageHeader } from 'antd';
 
 const carousel=(
     <Carousel autoplay >
@@ -27,11 +27,12 @@ class Home extends Component {
                 <hr/>
                 <MovieList/>
                 <hr style={{marginTop:30}}/>
-                <p>评论区</p>
-                <AllComments/>
+                <PageHeader title='评论区'>
+                    <AllComments url={`comments`}/>
+                </PageHeader>
                 <BackTop>
                 <span className="ant-back-top-inner"><img alt='To top' width='40' hight='40' src='http://localhost:5555/_uploads/photos/image_wk2N24jFcb3zewgEm6fGxgyEiulVCAC9.jpg'/></span>
-            </BackTop>   
+                </BackTop>   
             </div>
         )
     }

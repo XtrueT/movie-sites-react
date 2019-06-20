@@ -66,7 +66,6 @@ const useDataApi = (initialUrl,initialData,initialMethod) =>{
                                 case 'get':
                                 {
                                     result = await Axios_server.get(url);
-                                    // console.log(result);
                                     break;
                                 }
                                 case 'delete':
