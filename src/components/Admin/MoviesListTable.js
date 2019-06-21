@@ -12,10 +12,10 @@ function MovieListTable(props){
     const [previewVisible,set_previewVisible]=useState(false);
     const [movie_url,set_movie_url] = useState('');
     const [isChange,set_change] = useState(false);
-    const [get_movie,set_get_movie] = useState('1/3');
+    const [query,set_query] = useState('1/3');
 
     const [state,doFetch_url] = useDataApi(
-        `/movies/${get_movie}`,
+        `/movies/${query}`,
         {
             'message':'',
             'status':0,
@@ -35,9 +35,9 @@ function MovieListTable(props){
 
     useEffect(() => {
         if(isChange){
-            doFetch_url(`/movies/${get_movie}`);
+            doFetch_url(`/movies/${query}`);
         }
-    },[get_movie,doFetch_url,isChange]);
+    },[query,doFetch_url,isChange]);
 
 
     const IconText = ({ type, text }) => (
@@ -52,7 +52,11 @@ function MovieListTable(props){
         const callback = (that,res)=>{
             const {message,status} = res
             if (status===200){
-                window.location.reload();
+                let PageSize = page_size; 
+                set_query(`${page}/${PageSize-1}`);
+                set_change(true);
+                set_query(`${page}/${page_size}`);
+                set_change(true);
                 Message.success(message,1);
             };
             if(message!=="删除成功"&&status!==0){
@@ -90,7 +94,7 @@ function MovieListTable(props){
         pagination={{
         onChange: (page,pageSize) => {
             // console.log(page,pageSize);
-            set_get_movie(`${page}/${pageSize}`);
+            set_query(`${page}/${pageSize}`);
             set_change(true);
         },
         pageSize: page_size,

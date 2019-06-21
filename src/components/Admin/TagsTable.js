@@ -11,7 +11,7 @@ const EditableContext = createContext();
 
 const EditableRow = ({ form, index, ...props }) => (
     <EditableContext.Provider value={form}>
-        <tr{...props} />
+        <tr {...props} />
     </EditableContext.Provider>
 );
 
@@ -25,9 +25,9 @@ class EditableCell extends Component {
     toggleEdit = () => {
         const editing = !this.state.editing;
         this.setState({ editing }, () => {
-        if (editing) {
-            this.input.focus();
-        }
+            if (editing) {
+                this.input.focus();
+            }
         });
     };
 //提交保存的tag，并添加到当前state
@@ -252,7 +252,7 @@ class TagsTable extends Component {
         });
     return (
         <Fragment>
-            { (this.state.dataSource.length<1&&this.props.message ==="error") ?
+            { (this.state.dataSource.length<1 && this.props.message ==="error") ?
             <p>还没有一个标签请添加</p>:
             <PageHeader onBack={() =>this.props.history.push('/admin')} title="Tags" subTitle="所有标签页" />}
             <Table

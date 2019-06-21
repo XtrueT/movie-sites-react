@@ -17,8 +17,8 @@ const Admin = ()=>{
         {/* 登录权限控制组件 */}
         <AuthRouter path="/admin/users/:action" exact component ={()=>(<div>adminUser</div>)}/>
         <AuthRouter path="/admin/change_password" exact component={()=>(<div>change_password</div>)}/>
-        <Route path="/error" component={Error} />
-        <Route path="*" render={() => <Redirect to="/error"/> }/>
+        <Route path="/admin/error" component={Error} />
+        <Route path="*" render={() => <Redirect to="/admin/error"/> }/>
         </Switch>
     )
 }

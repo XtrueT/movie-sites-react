@@ -1,7 +1,8 @@
 import React,{useState,useEffect,Fragment} from 'react';
 import {Link} from 'react-router-dom';
 import {useDataApi} from '../../api/data_api';
-import {Avatar,Icon,Comment,List} from 'antd';
+import {Axios_delete} from '../../api/server';
+import {Avatar,Icon,Comment,List,message as Message,Button,Popconfirm} from 'antd';
 
 
 function AllComments(props){
@@ -30,6 +31,7 @@ function AllComments(props){
         if(isChange){
             doFetch_url(`${base_url}/${query}`);
         }
+        return set_change(false);
     },[query,doFetch_url,isChange,base_url]);
 
     const IconText = ({ type, text }) => (
@@ -38,15 +40,36 @@ function AllComments(props){
             {text}
         </span>
     );
-
+    const handleDelete = url=>{
+        // console.log(url);
+        const callback = (that,res)=>{
+            const {message,status} = res
+            if (status===200){
+                // window.location.reload();
+                let PageSize = page_size; 
+                set_query(`${page}/${PageSize-1}`);
+                set_change(true);
+                set_query(`${page}/${page_size}`);
+                set_change(true);
+                Message.success(message,1);
+            };
+            if(message!=="删除成功"&&status!==0){
+                Message.error(message,1);
+            };
+            if(status===0){
+                Message.error('连接服务器失败',1);
+            }
+        };
+        Axios_delete(url,{},this,callback);
+    }
     if(isError){
             return (
                 <div>
                     {message}
                 </div>
             )
-        }
-        return(
+    }
+    return(
         <Fragment>
         <List
             loading={isLoading}
@@ -55,6 +78,9 @@ function AllComments(props){
             onChange: (page,pageSize) => {
                 // console.log(page,pageSize);
                 set_query(`${page}/${pageSize}`);
+                if(props.set_list){
+                    props.set_list();
+                }
                 set_change(true);
             },
             pageSize: page_size,
@@ -69,6 +95,16 @@ function AllComments(props){
                     actions={[
                         <IconText type="star-o" text={item.comment_number||0} />,
                         <IconText type="play-square" text={item.play_number||0} />,
+                        props.is_edit?
+                        <Popconfirm 
+                        title="确定删除?" 
+                        onConfirm={() => {
+                            handleDelete(`/delete/${item.id}/comment`);
+                        }}>
+                        <Button type="link" style={{top:30,right:20,position:"absolute"}}>                    
+                            <Icon type="delete"/>删除
+                        </Button>
+                    </Popconfirm>:null
                     ]}
                     key={item.id}
                     author={item.name}
@@ -81,7 +117,7 @@ function AllComments(props){
             )}
         />
         </Fragment>
-        );
+    );
 };
 export default AllComments;
 

@@ -9,11 +9,13 @@ import Navs  from '../components/Home/Navs';
 import Error from '../components/Home/Error';
 import Login from '../components/Home/Login';
 import Register from '../components/Home/Register';
-import Movie from '../components/Movie/Movie';
 import Profile from '../components/User/Profile';
+import AboutYou from '../components/User/AboutYou';
+import Movie from '../components/Movie/Movie';
 import PlayMovie from '../components/Movie/PlayMovie';
 
 import {Layout} from 'antd';
+
 
 const {Content} = Layout;
 
@@ -65,6 +67,7 @@ class UserLayout extends Component {
                             <Route path="/movies/:id"  component ={PlayMovie}/>
                             {/* 登录权限控制组件 */}
                             <AuthRouter path="/profile"  component ={Profile}/>
+                            <AuthRouter path="/about/:action"  component ={AboutYou}/>
                             <AuthRouter path="/change_password" exact component={()=>(<div>change_password</div>)}/>
                             <AuthRouter path="/:user_id/change_password" exact component={()=>(<div>change_password</div>)}/>
                             <Route path="/error" component={Error} />

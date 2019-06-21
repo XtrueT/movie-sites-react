@@ -77,7 +77,6 @@ class AddComment extends React.Component {
         setTimeout(() => {
         const data ={content:this.state.value}
         Axios_post(`/add/movie/${this.props.match.params.id}/comments`,data,this,(that,rs)=>{
-            
             const {message} = rs;
             const {data} = rs;
             Message.success(message);
@@ -89,7 +88,7 @@ class AddComment extends React.Component {
             });
         })},1000);
     }
-
+    handleList = ()=>this.setState({list:[]});
     handleChange = e => {
         this.setState({
         value: e.target.value,
@@ -100,9 +99,10 @@ class AddComment extends React.Component {
         const { submitting, value,isLogged,url,list} = this.state;
         // console.log(list);
         return (
-        isLogged ?(
             <PageHeader title='最新评论'>
-            <Comment
+            {isLogged ?(
+                <>
+                <Comment
                 avatar={<Face/>}
                 content={
                     <Editor
@@ -112,14 +112,15 @@ class AddComment extends React.Component {
                     value={value}
                     />
                 }
-            />
-            {list.length > 0 && <CommentList list={list} />}
-            <AllComments url={url}/>
+                />
+                {list.length > 0 && <CommentList list={list} />}
+                </>
+            )
+            :(
+                <PageHeader title={<Link to='/login'>登录后评论</Link> }></PageHeader>
+            )}
+            <AllComments url={url} set_list={this.handleList}/>
         </PageHeader>
-        )
-        :(
-            <PageHeader title={<Link to='/login'>登录后评论</Link> }></PageHeader>
-        )
         );
     }
 }

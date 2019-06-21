@@ -204,6 +204,29 @@ const navMenus = ()=>{
             NavLinkTo: '/profile',
             subMenu: null
         },
+        {
+            key: '/about/you',
+            name: 'AboutYou',
+            icon:'bars',
+            NavLinkTo: '/about/comments',
+            subMenu: [
+            {
+                key: 'about/comments',
+                name: 'MyComments',
+                NavLinkTo: '/about/comments',
+            },
+            {
+                key: '/about/favorites',
+                name: 'MyFavorite',
+                NavLinkTo: '/about/favorites',
+            },
+            {
+                key: '/about/history',
+                name: 'MyHistory',
+                NavLinkTo: '/about/history',
+            },
+            ]
+        },
     ],
     
     notLogged:[
