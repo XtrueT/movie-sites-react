@@ -82,7 +82,7 @@ const isLogin = ()=>{
     let auth_token = window.sessionStorage.access_token;
     if(auth_token){
         const data = jwt_decode(auth_token);
-        // console.log(data);
+        console.log(data);
         const {role,name} = data;
         if(name){
             sessionStorage.setItem('admin_name',name);
@@ -148,7 +148,7 @@ const navMenus = ()=>{
             NavLinkTo: '/admin/users/admins',
         },
         {
-            key: 'users/tags',
+            key: 'users/roles',
             name: '角色管理',
             NavLinkTo: '/admin/users/roles',
         },
@@ -188,10 +188,10 @@ const navMenus = ()=>{
             subMenu:null,
         },
         {
-            key: '/movie',
-            name: 'Movie',
+            key: '/movies',
+            name: 'Movies',
             icon:'bars',
-            NavLinkTo: '/movie',
+            NavLinkTo: '/movies',
             subMenu: null,
         },
     ],

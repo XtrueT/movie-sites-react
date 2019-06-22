@@ -17,10 +17,14 @@ class LoginForm extends Component {
                 Message.success(message,1);
                 if(role ==="admin"){
                     window.location.href="/admin";
-                    
                 }else{
                     this.props.Set_isLogin(isLogged);
-                    this.props.history.push('/');
+                    const {hash} = this.props.history.location;
+                    if(hash!==''){
+                        this.props.history.push(hash.substr(hash.indexOf("#")+1));
+                    }else{
+                        this.props.history.push('/');
+                    }
                 }
             };
             if(message!=="登录成功"&&status!==0){
@@ -45,6 +49,9 @@ class LoginForm extends Component {
     render() {
         const {getFieldDecorator} = this.props.form;
         // console.log(this.pathname);
+        
+        // const {hash} = this.props.history.location;
+        // console.log(hash.substr(hash.indexOf("#")+1));
         return (
             <Fragment>
             <Form onSubmit={this.handleSubmit} className="login-form">

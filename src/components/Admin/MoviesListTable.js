@@ -50,12 +50,12 @@ function MovieListTable(props){
     const handleDelete = url=>{
         // console.log(url);
         const callback = (that,res)=>{
-            const {message,status} = res
+            const {message,status,data} = res
             if (status===200){
-                let PageSize = page_size; 
+                let PageSize = page_size;
                 set_query(`${page}/${PageSize-1}`);
                 set_change(true);
-                set_query(`${page}/${page_size}`);
+                set_query(`${Math.ceil(data/page_size)}/${page_size}`);
                 set_change(true);
                 Message.success(message,1);
             };

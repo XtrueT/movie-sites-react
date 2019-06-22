@@ -9,6 +9,7 @@ function UserComments(){
     return(
         <PageHeader 
             title="评论历史"
+            style={{width:860,marginLeft:'auto',marginRight:'auto',textAlign:'left'}}
             extra={[
                 !edit?<Button key="1" onClick={()=>set_edit(true)}>编辑</Button>:
                 <Button key="2" onClick={()=>set_edit(false)}>取消</Button>

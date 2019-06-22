@@ -43,13 +43,13 @@ function AllComments(props){
     const handleDelete = url=>{
         // console.log(url);
         const callback = (that,res)=>{
-            const {message,status} = res
+            const {message,status,data} = res
             if (status===200){
-                // window.location.reload();
+                console.log(data)
                 let PageSize = page_size; 
                 set_query(`${page}/${PageSize-1}`);
                 set_change(true);
-                set_query(`${page}/${page_size}`);
+                set_query(`${Math.ceil(data/page_size)}/${page_size}`);
                 set_change(true);
                 Message.success(message,1);
             };
@@ -83,10 +83,11 @@ function AllComments(props){
                 }
                 set_change(true);
             },
-            pageSize: page_size,
+            // pageSize: page_size,
             total:total*page_size,
             hideOnSinglePage:true,
             current:page,
+            ...props.paginationSetting,
             }}
             dataSource={list}
             renderItem={item => (
@@ -108,8 +109,8 @@ function AllComments(props){
                     ]}
                     key={item.id}
                     author={item.name}
-                    avatar={<Avatar src={item.user_img}/>}
-                    content={<span><Link to={`/movies/${item.about_movie_id}`}>@{item.about_movie}</Link>
+                    avatar={<Avatar size='large' src={item.user_img}/>}
+                    content={<span><Link to={`/movie/${item.about_movie_id}`}>@{item.about_movie}</Link>
                     <p>{item.content}</p></span>}
                     datetime={<span>{item.add_time||0}</span>}
                 />

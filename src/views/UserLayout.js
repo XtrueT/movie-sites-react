@@ -11,7 +11,7 @@ import Login from '../components/Home/Login';
 import Register from '../components/Home/Register';
 import Profile from '../components/User/Profile';
 import AboutYou from '../components/User/AboutYou';
-import Movie from '../components/Movie/Movie';
+import Movies from '../components/Movie/Movies';
 import PlayMovie from '../components/Movie/PlayMovie';
 
 import {Layout} from 'antd';
@@ -44,8 +44,8 @@ class UserLayout extends Component {
                                 }
                     }/>
                 </nav>
-                <Content style={{ paddingTop:70 ,marginLeft:30 ,marginRight:30,marginBottom:50,minHeight:'100vh'}}>
-                    <div style={{ padding: 24, background: '#ccc', textAlign: 'center',minHeight:'30vh'}}>
+                <Content style={{ paddingTop:70 }}>
+                    <div className='User_main' >
                         <Switch>
                             <Route path="/" exact component={Home}/>
                             <Route path="/login" exact component={
@@ -60,11 +60,11 @@ class UserLayout extends Component {
                                     return <Login history={history} Set_isLogin={this.Set_isLogin}/>
                                 }
                             }/>
-                            <Route path="/movie"  component ={Movie}/>
+                            <Route path="/movies" exact component ={Movies}/>
                             <Route path="/register" exact component ={Register}/>
                             <Route path="/admin/register" exact component ={Register}/>
                             <Route path="/forgot_password" exact component ={()=>(<div>forgot_password</div>)}/>
-                            <Route path="/movies/:id"  component ={PlayMovie}/>
+                            <Route path="/movie/:id" exact component ={PlayMovie}/>
                             {/* 登录权限控制组件 */}
                             <AuthRouter path="/profile"  component ={Profile}/>
                             <AuthRouter path="/about/:action"  component ={AboutYou}/>

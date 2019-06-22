@@ -117,9 +117,9 @@ class AddComment extends React.Component {
                 </>
             )
             :(
-                <PageHeader title={<Link to='/login'>登录后评论</Link> }></PageHeader>
+                <PageHeader title={<Link to={`/login#${window.location.pathname}`}>登录后评论</Link> }></PageHeader>
             )}
-            <AllComments url={url} set_list={this.handleList}/>
+            <AllComments url={url} set_list={this.handleList} paginationSetting = {{simpel:true}}/>
         </PageHeader>
         );
     }

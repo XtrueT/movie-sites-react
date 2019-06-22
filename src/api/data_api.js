@@ -26,6 +26,8 @@ const useDataApi = (initialUrl,initialData,initialMethod) =>{
             case 'ERROR':{
                 return {
                     ...state,
+                    message:action.payload,
+                    data:{data:action.payload},
                     isLoading:false,
                     isError:true,
                 };
@@ -53,19 +55,13 @@ const useDataApi = (initialUrl,initialData,initialMethod) =>{
                                     result = await Axios_server.post(url,state.data);
                                     break;
                                 }
-                                case 'put':
-                                {
-                                    result = await Axios_server.put(url,state.data);
-                                    break;
-                                }
-                                case 'patch':
-                                {
-                                    result = await Axios_server.patch(url,state.data);
-                                    break;
-                                }
                                 case 'get':
                                 {
                                     result = await Axios_server.get(url);
+                                    // console.log(result);
+                                    if(result==='Unauthorized Access'){
+                                        return dispatch({type:'ERROR',payload:result});
+                                    }
                                     break;
                                 }
                                 case 'delete':

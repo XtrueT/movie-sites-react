@@ -1,10 +1,10 @@
-import React ,{Fragment,useState,useEffect} from 'react';
+import React ,{useState,useEffect} from 'react';
 import {Link} from 'react-router-dom';
 
 import { useDataApi } from '../../api/data_api';
 import { formatSeconds } from '../../utils/utils';
 
-import {Card,Col,Row,List,Button} from 'antd';
+import {Card,Col,Row,List,Button, Spin,Icon} from 'antd';
 
 const {Meta}=Card;
 
@@ -45,40 +45,37 @@ function MovieList(props){
     if(isError){
         return (<div>{message}</div>)
     }
-    const onLoadMore=(
+    const onLoadMore =(
         !isLoading && total!==page? (
             <div style={{textAlign:'center',marginTop:30}}>
-            <p>
-                <Button 
-                onClick={()=>{
+            <Button type='link' onClick={()=>{
                     set_get_movie(`1/${page_size+4}`);
                     set_change(true);
-                }}>加载更多
-                </Button>
-            </p></div>
+            }}>
+                <Spin  indicator={<Icon type="loading" style={{ fontSize: 24 }} spin />} tip={`查看更多`}/>
+            </Button>
+            </div>
             ) :null
-            
     )
     return(
-    <Fragment>
     <Row gutter={{xs: 8, sm: 16, md: 24, lg: 32}}>
         <List
         loading={isLoading}
         loadMore={onLoadMore}
         dataSource={list}
         renderItem={item => (
-        <Col   xs={24} sm={12} md={6} lg={6} xl={6} >
-        <List.Item key={item.id}>
+        <Col  xs={24} sm={12} md={6} lg={6} xl={6} >
+        <List.Item key={item.id} style={{textAlign:'center'}}>
             <Card
                 className='card'
                 hoverable
-                style={{marginTop:30,width:250}}
+                style={{width:250,marginLeft:'auto',marginRight:'auto'}}
                 loading={isLoading}
                 key={item.id}
                 cover={
                     <img
                     alt={item.title}
-                    style={{width:'100%',height:400}}
+                    style={{width:'100%',height:360,marginLeft:'auto',marginRight:'auto'}}
                     src={item.cover_img}
                     />
                 }
@@ -87,7 +84,7 @@ function MovieList(props){
             title={`《${item.title}》`}
             />
             <div className='p_text'>
-            <Link to={`/movies/${item.id}`}>
+            <Link to={`/movie/${item.id}`}>
                 <p>
                 <img alt='play' 
                 style={{marginTop:"50%",width:'50%',height:"50%"}}
@@ -104,7 +101,7 @@ function MovieList(props){
         )}
     />
     </Row>
-    </Fragment>)
+    )
 }
 
 export default MovieList;

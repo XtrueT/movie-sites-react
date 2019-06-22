@@ -3,8 +3,6 @@ import {Redirect} from 'react-router-dom';
 
 import {useDataApi} from '../../api/data_api';
 
-import TagsTable from './TagsTable';
-
 import { Spin } from 'antd';
 
 
@@ -47,47 +45,29 @@ const columns = (action) =>{
     }
 } 
 
-function AdminMovies(props){
-    return <div>Movies</div>
+function AdminUsers(props){
+    return <div>Users</div>
 }
 
-function AdminTrailers(props){
-    return <div>Trailers</div>
+function AdminRoles(props){
+    return <div>Roles</div>
 }
-function AdminTags(props){
-    const {data,isError,isLoading} = useDataApi(
-        '/admin/tags',
-        {  
-            
-                'message':'',
-                'status':0,
-                'data':[]
-        },
-        'get'
-    );
-    
-    const {message} = data;
-    const tags = data.data;
-    if(isError){
-        return (<div>{message}</div>)
-    }
-    return (isLoading?<Spin size="large" className='login-form' />:<TagsTable tags_data={tags} message={message} {...props}/>)
+function AdminAdmins(props){
+    return <div>Admins</div>
 }
 
-function Resources(props){
-
+function Users(props){
     const {action} = props.match.params;
     const _columns = columns(action);
     if(action==='lists'){
-        return <AdminMovies log_columns={_columns} />
-    }else if(action==='trailers'){
-        return <AdminTrailers log_columns={_columns}/>
-    }else if(action ==='tags'){
+        return <AdminUsers log_columns={_columns} />
+    }else if(action==='roles'){
+        return <AdminRoles log_columns={_columns}/>
+    }else if(action ==='admins'){
         // return <AdminTags log_columns={_columns}{...props}/>
-        return <AdminTags {...props}/>
+        return <AdminAdmins {...props}/>
     }else{
-        return <Redirect to ='/admin'/>
+        return <Redirect to ='/admin/error'/>
     }
 }
-
-export default Resources;
+export default Users;

@@ -4,10 +4,10 @@ import PlayerContainer from 'griffith';
 import {useDataApi} from '../../api/data_api';
 import {formatSeconds} from '../../utils/utils';
 
-import {Spin,BackTop,Row,Col,Card,Icon} from 'antd'; 
+import {Spin,BackTop,Row,Col,Card,Icon,Typography} from 'antd'; 
 import AddComment from '../Comment/AddComment';
 
-
+const { Paragraph } = Typography;
 function PlayMovie(props){
     // console.log(props)
     const [movie_url] = useState(props.match.url);
@@ -67,7 +67,6 @@ function PlayMovie(props){
         (
             <Fragment>
                 <PlayerContainer {...play_props}/>
-                {/* <video src={url} preload="metadata"  width="800" height="450" controls/> */}
                 <div style={{ background: '#ECECEC', padding: '30px',textAlign:'left' }}>
                     <Card 
                         title={`《${title}》`}
@@ -87,7 +86,7 @@ function PlayMovie(props){
                                 <p>上映日期：{release_time}</p>
                                 <p>上映地区：{area}</p>
                                 <p>片长：{formatSeconds(movie_length)}</p>
-                                <p>简介：{info}</p>
+                                <Paragraph ellipsis={{ rows: 1, expandable: true }} >简介：{info}</Paragraph>
                             </Col>
                         </Row>
                             }

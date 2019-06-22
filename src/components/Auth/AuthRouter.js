@@ -12,10 +12,11 @@ class AuthRouter extends Component{
                 {...rest}
                 render={
                     props=>{
+                        // console.log(props);
                         return isLogged?
                         <Component {...props}/>
                         :
-                        <Redirect to ="/login"/>
+                        <Redirect to ={`/login#${props.location.pathname}`}/>
                     }
                 }
             />

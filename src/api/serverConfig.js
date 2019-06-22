@@ -59,9 +59,7 @@ Axios_server.interceptors.response.use(
         if(error.response){
             // console.log(error.response.data);
             let {message} = error.response.data;
-            if(message==='无效token,请重新登录'){
-                // alert(message);
-                Message.error(message);
+            const deleteToken =()=>{
                 window.sessionStorage.removeItem('access_token');
                 if(window.sessionStorage.getItem('admin_name')){
                     window.sessionStorage.removeItem('admin_name');
@@ -69,6 +67,14 @@ Axios_server.interceptors.response.use(
                 }else{
                     window.location.href='/login';
                 }
+            }
+            if(message==='无效token,请重新登录'){
+                Message.error(message);
+                deleteToken();
+            }
+            if(error.response.data==='Unauthorized Access'){
+                Message.error('已经登录了一个新用户,请重新登录');
+                deleteToken();
             }
             return error.response.data;
         }
