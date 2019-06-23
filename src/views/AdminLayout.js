@@ -72,7 +72,7 @@ class AdminLayout extends Component {
                 </Sider>
                 <Layout  className={ this.state.collapsed ? 'collapsed_t' : 'collapsed_f ' } >
                     <Content style={{ margin: '16px' }}>
-                        <div style={{ padding: 24, background: '#fff', minHeight: '60vh' }}>
+                        <div style={{ padding: 24,  minHeight: '60vh' }}>
                             <Admin/>
                         </div>
                     </Content>

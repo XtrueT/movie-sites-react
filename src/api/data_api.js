@@ -88,7 +88,10 @@ const useDataApi = (initialUrl,initialData,initialMethod) =>{
         return () => {
             didCancel = true;
         };
-    },[url,method]);
+    },
+    // eslint-disable-next-line 
+    [url,method] 
+    );
 
     const doFetch_url = (url) =>{
         set_url(url);

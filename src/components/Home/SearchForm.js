@@ -34,7 +34,7 @@ function SearchForm(){
             <main className='search-ol'>
             {data.data.list.length!==0&&data.data.message!==''?
                     data.data.list.map(item=>(
-                        <a href={`/movies/${item.id}`} key={item.id}>
+                        <a href={`/movie/${item.id}`} key={item.id}>
                             <li key={item.id}>
                                 <span style={{marginLeft:30}}>{item.title}</span>
                             </li>

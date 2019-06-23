@@ -255,6 +255,7 @@ class TagsTable extends Component {
             { (this.state.dataSource.length<1 && this.props.message ==="error") ?
             <p>还没有一个标签请添加</p>:
             <PageHeader onBack={() =>this.props.history.push('/admin')} title="Tags" subTitle="所有标签页" />}
+            <PageHeader>
             <Table
                 components={components}
                 rowClassName={() => 'editable-row'}
@@ -273,6 +274,7 @@ class TagsTable extends Component {
                     )
                 }
             />
+            </PageHeader>
         </Fragment>
     );
 }

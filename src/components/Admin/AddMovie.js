@@ -62,7 +62,7 @@ class AddMovieForm extends Component {
         const {tags} = this.state;
         return (
         <Fragment>
-            <PageHeader onBack={() =>this.props.history.push('/admin/resources/movies')} title="NewMovie" subTitle="新建电影" />
+            <PageHeader onBack={() =>this.props.history.push('/admin/resources/movies')} title="NewMovie" subTitle="新建电影" >
             <Form onSubmit={this.handleSubmit} style={{marginLeft:'auto',marginRight:'auto',width:480,border:'1px'}}>
                 <Form.Item label="片名">
                 {getFieldDecorator('title', {
@@ -157,6 +157,7 @@ class AddMovieForm extends Component {
                 </Button>
                 </Form.Item>
             </Form>
+            </PageHeader>
         </Fragment>
         );
     }

@@ -83,7 +83,7 @@ function AllComments(props){
                 }
                 set_change(true);
             },
-            // pageSize: page_size,
+            pageSize: page_size,
             total:total*page_size,
             hideOnSinglePage:true,
             current:page,

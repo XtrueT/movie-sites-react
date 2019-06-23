@@ -5,7 +5,7 @@ import {useDataApi} from '../../api/data_api';
 import {Axios_delete} from '../../api/server';
 import {formatSeconds} from '../../utils/utils';
 
-import { List, Icon,Button,message as Message,Popconfirm,Modal} from 'antd';
+import { List, Icon,Button,message as Message,Popconfirm,Modal, PageHeader} from 'antd';
 
 function MovieListTable(props){
 
@@ -85,6 +85,7 @@ function MovieListTable(props){
     }
     return(
     <Fragment>
+        <PageHeader>
         <Modal visible={previewVisible} style={{width:760,hight:480}} footer={null} destroyOnClose={true} onCancel={()=>set_previewVisible(false)}>
             <video alt="movie" style={{ width: '100%' }} src={movie_url} controls="controls"/>
         </Modal>
@@ -151,6 +152,7 @@ function MovieListTable(props){
         </List.Item>
         )}
     />
+    </PageHeader>
     </Fragment>
     );
 }

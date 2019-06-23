@@ -22,6 +22,7 @@ function check_isImage(file) {
 
 function check_isVideo(file) {
     let isVideo = false;
+    let isError = false;
     const file_type = ['video/mp4'];
     if(file.type){
         if (file_type.includes(file.type) ){
@@ -35,7 +36,25 @@ function check_isVideo(file) {
     if (!isLt50000M) {
         Message.error(`文件最大为${50000}`);
     };
-    return isVideo && isLt50000M ;
+    const Callback = (bool) => (isError=bool);
+    try {
+        if(isVideo){
+            const url = URL.createObjectURL(file);
+            console.log(url.valueOf);
+            const audioElement = new Audio(url);
+            audioElement.addEventListener("loadedmetadata", function (_event) {
+                
+            });
+        }
+        Callback(false);
+    } catch (error) {
+        isError=true;
+    }
+    console.log(isError);
+    if(isError&&isVideo){
+        Message.error(`非法文件`);
+    }
+    return isVideo && isLt50000M && !isError ;
 }
 
 function formatSeconds(value) {

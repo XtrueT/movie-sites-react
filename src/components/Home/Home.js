@@ -38,7 +38,7 @@ class HomeCarousel extends Component{
                         return(
                         <div key={id} className='wrapper'>
                             <img alt={title} src={cover_img}/>
-                            <Link to={`/movies/${id}`}>
+                            <Link to={`/movie/${id}`}>
                                 <div className='wrapper1'>
                                     <Title style={{color:'#fff'}}>{title}</Title>
                                     <Paragraph style={{color:'#fff'}} ellipsis>{info}</Paragraph>

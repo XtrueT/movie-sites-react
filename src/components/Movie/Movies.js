@@ -5,7 +5,7 @@ import MovieList from './MovieList';
 
 const {CheckableTag} = Tag;
 
-function Movies({match,history}){
+function Movies({history}){
     const [selectedTags,setSelect]=useState([]);
     const [query,setQuery]=useState(null);
     const [state]=useDataApi(
@@ -45,6 +45,7 @@ function Movies({match,history}){
                 tags={tags.map(tag=>{
                     return (
                         <CheckableTag
+                            style={{marginTop:10,marginLeft:20}}
                             key={tag.num}
                             checked={selectedTags.indexOf(tag.num)>-1}
                             onChange={checked=>(

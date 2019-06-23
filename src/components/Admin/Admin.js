@@ -6,11 +6,12 @@ import Logs from './Logs';
 import AddMovie from './AddMovie';
 import Resources from './Resources';
 import Error from '../Home/Error';
+import AdminHome from './AdminHome';
 
 const Admin = ()=>{
     return (
         <Switch>
-        <Route path="/admin" exact component={()=>(<div>adminHome</div>)}/>
+        <Route path="/admin" exact component={AdminHome}/>
         <AuthRouter path="/admin/resources/:action" exact component ={Resources}/>
         <AuthRouter path='/admin/resources/movies/add' extra component={AddMovie}/>
         <AuthRouter path="/admin/:role/logs" exact component ={Logs}/>
