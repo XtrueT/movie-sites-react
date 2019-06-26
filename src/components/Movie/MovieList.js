@@ -26,6 +26,7 @@ function MovieList(props){
         },
         'get'
     );
+    // console.log(state);
     const {data,isError,isLoading} = state;
     const {data:{total,page,page_size,list}}=data;
     const {message} = data;

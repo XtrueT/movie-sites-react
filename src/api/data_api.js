@@ -43,6 +43,8 @@ const useDataApi = (initialUrl,initialData,initialMethod) =>{
         data:initialData,
     });
 
+    
+
     useEffect(()=>{
         let didCancel = false;
         const fetch_data = async ()=>{
