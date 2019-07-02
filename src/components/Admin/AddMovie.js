@@ -1,8 +1,9 @@
 import  React ,{Component, Fragment} from 'react';
+import {Link} from 'react-router-dom';
 import {Axios_post,Axios_get} from '../../api/server';
 import UploadMovie from './UploadMovie';
 import UploadVideo from './UploadVideo';
-import { Form, Button, Input,Radio,message as Message,PageHeader,DatePicker,Select} from 'antd';
+import { Form, Button, Input,Radio,message as Message,PageHeader,DatePicker,Select, Empty} from 'antd';
 
 const {Option} =Select;
 
@@ -126,9 +127,10 @@ class AddMovieForm extends Component {
                     <Radio.Group  
                     buttonStyle="solid" >
                     {
-                        tags.map(tag=>{
+                        tags.length >0 ?tags.map(tag=>{
                             return <Radio.Button value={tag.tag_name} key={tag.tag_name}>{tag.tag_name}</Radio.Button>
-                        })
+                        }):(<Empty description={<Link to='/admin/resources/tags'>去添加一个标签</Link> } />)
+                        
                     } 
                     </Radio.Group>
                 )}

@@ -1,4 +1,6 @@
-
+.back404{
+    background-image: url('/antd-demo/public/image/404.jpg');
+}
 
 .collapsed_false_face {
     display: inline-block;

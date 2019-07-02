@@ -10,6 +10,7 @@ function SearchForm(){
         },
         message:''
     });
+    console.log(data);
     const handlerSearch = (v)=>{
         //匹配中英文数字组合
         const pattern = /^[\u4e00-\u9fa5a-zA-Z-z0-9]+$/;

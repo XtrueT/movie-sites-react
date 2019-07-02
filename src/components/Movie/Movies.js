@@ -1,6 +1,6 @@
 import React ,{Fragment,useState} from 'react';
 import {useDataApi} from '../../api/data_api';
-import {Tag, PageHeader} from 'antd';
+import {Tag, PageHeader,Empty} from 'antd';
 import MovieList from './MovieList';
 
 const {CheckableTag} = Tag;
@@ -34,7 +34,7 @@ function Movies({history}){
         }
     };
     if(isError){
-        return <div>something error</div>
+        return (<Empty/>)
     }
     return (
         <Fragment>

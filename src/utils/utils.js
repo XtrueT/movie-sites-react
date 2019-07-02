@@ -101,7 +101,7 @@ const isLogin = ()=>{
     let auth_token = window.sessionStorage.access_token;
     if(auth_token){
         const data = jwt_decode(auth_token);
-        console.log(data);
+        // console.log(data);
         const {role,name} = data;
         if(name){
             sessionStorage.setItem('admin_name',name);
@@ -289,4 +289,19 @@ const set_pagination = ()=>{
     return pagination;
 }
 
-export {isLogin,color16,navMenus,set_pagination,check_isImage,check_isVideo,formatSeconds};
+const set_defaultData = ()=>{
+    const defaultData ={
+        'message':'',
+        'status':0,
+        'data':{
+            'total':0,//movies.pages,//总页数
+            'page':0,//movies.page,//当前页
+            'page_size':0,//page_size,//每页总数
+            'list':[] //movies_list[] //数据列表
+        }
+    }
+
+    return defaultData;
+} 
+
+export {isLogin,color16,navMenus,set_pagination,check_isImage,check_isVideo,formatSeconds,set_defaultData};

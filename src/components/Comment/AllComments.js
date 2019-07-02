@@ -1,14 +1,12 @@
-import React,{useState,useEffect,Fragment} from 'react';
+import React,{useState,Fragment} from 'react';
 import {Link} from 'react-router-dom';
 import {useDataApi} from '../../api/data_api';
 import {Axios_delete} from '../../api/server';
-import {Avatar,Icon,Comment,List,message as Message,Button,Popconfirm} from 'antd';
+import {Avatar,Icon,Comment,List,message as Message,Button,Popconfirm, Empty} from 'antd';
 
 
 function AllComments(props){
-    const [query,set_query] = useState(props.url);
     const [base_url] = useState(props.url);
-    const [isChange,set_change] = useState(false);
     const [state,doFetch_url] = useDataApi(
         base_url,//url
         {
@@ -21,18 +19,9 @@ function AllComments(props){
                 'list':[] //movies_list[] //数据列表
             }
         },
-        'get'
     );
     const {data,isError,isLoading} = state;
-    const {message} = data;
     const {data:{total,page,page_size,list}}=data;
-    
-    useEffect(() => {
-        if(isChange){
-            doFetch_url(`${base_url}/${query}`);
-        }
-        return set_change(false);
-    },[query,doFetch_url,isChange,base_url]);
 
     const IconText = ({ type, text }) => (
         <span>
@@ -46,11 +35,10 @@ function AllComments(props){
             const {message,status,data} = res
             if (status===200){
                 console.log(data)
-                let PageSize = page_size; 
-                set_query(`${page}/${PageSize-1}`);
-                set_change(true);
-                set_query(`${Math.ceil(data/page_size)}/${page_size}`);
-                set_change(true);
+                doFetch_url(`${base_url}`);
+                if(Math.ceil(data/page_size) > 1 && page-1 <= Math.ceil(data/page_size)){
+                    doFetch_url(`${base_url}/${page}/${page_size}`);
+                }
                 Message.success(message,1);
             };
             if(message!=="删除成功"&&status!==0){
@@ -64,10 +52,8 @@ function AllComments(props){
     }
     if(isError){
             return (
-                <div>
-                    {message}
-                </div>
-            )
+                <Empty/>
+            );
     }
     return(
         <Fragment>
@@ -76,12 +62,8 @@ function AllComments(props){
             itemLayout="horizontal"
             pagination={{
             onChange: (page,pageSize) => {
-                // console.log(page,pageSize);
-                set_query(`${page}/${pageSize}`);
-                if(props.set_list){
-                    props.set_list();
-                }
-                set_change(true);
+                console.log(`${base_url}/${page}/${pageSize}`);
+                doFetch_url(`${base_url}/${page}/${pageSize}`)
             },
             pageSize: page_size,
             total:total*page_size,

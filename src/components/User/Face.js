@@ -12,10 +12,9 @@ function Face(){
                 'user_img':'',
             },
         },
-        'get'
     )
     const {data,isError} = state;
-    console.log(state);
+    // console.log(state);
     const {data:{user_name,user_img}} = data;
     if(isError && isLogin()){
         return <span>something wrong...</span>;

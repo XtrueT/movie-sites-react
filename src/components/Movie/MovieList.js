@@ -1,19 +1,18 @@
-import React ,{useState,useEffect} from 'react';
+import React ,{useState} from 'react';
 import {Link} from 'react-router-dom';
 
 import { useDataApi } from '../../api/data_api';
 import { formatSeconds } from '../../utils/utils';
 
-import {Card,Col,Row,List,Button, Spin,Icon} from 'antd';
+import {Card,Col,Row,List,Button, Spin,Icon, Empty} from 'antd';
 
 const {Meta}=Card;
 
 function MovieList(props){
 
-    const [get_movie,set_get_movie]=useState('1/4');
-    const [change,set_change]=useState(false);
+    const [query]=useState('1/4');
     const [state,doFetch_url] = useDataApi(
-        `/movies/${get_movie}`,
+        `/movies/${query}`,
         {
             'message':'',
             'status':0,
@@ -24,34 +23,19 @@ function MovieList(props){
                 'list':[] //movies_list[] //数据列表
             }
         },
-        'get'
     );
     // console.log(state);
     const {data,isError,isLoading} = state;
     const {data:{total,page,page_size,list}}=data;
-    const {message} = data;
 
-    useEffect(()=>{
-        if(change){
-            doFetch_url(`${props.url||''}/movies/${get_movie}`);
-        }
-        if(props.url!=='/tag/all'){
-            doFetch_url(`${props.url||''}/movies/${get_movie}`);
-        }else{
-            doFetch_url(`/movies/${get_movie}`);
-        }
-        
-    },[change,doFetch_url,get_movie,props]
-    )
     if(isError){
-        return (<div>{message}</div>)
+        return (<Empty/>)
     }
     const onLoadMore =(
         !isLoading && total!==page? (
             <div style={{textAlign:'center',marginTop:30}}>
             <Button type='link' onClick={()=>{
-                    set_get_movie(`1/${page_size+4}`);
-                    set_change(true);
+                doFetch_url(`/movies/${page}/${page_size+page_size}`);
             }}>
                 <Spin  indicator={<Icon type="loading" style={{ fontSize: 24 }} spin />} tip={`查看更多`}/>
             </Button>

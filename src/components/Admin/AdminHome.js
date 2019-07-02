@@ -18,11 +18,10 @@ function AdminHome(){
             'status':0,
             'data':{}
         },
-        'get'
     );
     // console.log(state.data.data);
     const {data,isError,isLoading} = state;
-    const {data:{admin_logs,user_logs,comments,users,op_logs,movies}} = data;
+    const {data:{admin_logs,user_logs,comments,users,op_logs,movies,tags}} = data;
     if(isError){
         return(
             <div>Something Error...</div>
@@ -89,6 +88,16 @@ function AdminHome(){
                         <Statistic
                             title={<Link to='/admin/resources/movies'>电影资源</Link>}
                             value={movies}
+                            valueStyle={{ color: '#cf1322' }}
+                            prefix={<Icon type="arrow-up" />}
+                        />
+                        </Card>
+                    </Col>
+                    <Col span={8}>
+                        <Card  hoverable style={cardStyle}>
+                        <Statistic
+                            title={<Link to='/admin/resources/tags'>电影标签资源</Link>}
+                            value={tags}
                             valueStyle={{ color: '#cf1322' }}
                             prefix={<Icon type="arrow-up" />}
                         />

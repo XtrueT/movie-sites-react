@@ -4,7 +4,7 @@ import PlayerContainer from 'griffith';
 import {useDataApi} from '../../api/data_api';
 import {formatSeconds} from '../../utils/utils';
 
-import {Spin,BackTop,Row,Col,Card,Icon,Typography} from 'antd'; 
+import {Spin,BackTop,Row,Col,Card,Icon,Typography,Empty} from 'antd'; 
 import AddComment from '../Comment/AddComment';
 
 const { Paragraph } = Typography;
@@ -25,7 +25,7 @@ function PlayMovie(props){
     const {url,cover_img,title,info,play_number,comment_number,movie_length,area,release_time,tag_id} = data.data;
     
     if(isError){
-        return (<div>Something error</div>);
+        return (<Empty/>);
     }
     const duration = 182
     const sources = {

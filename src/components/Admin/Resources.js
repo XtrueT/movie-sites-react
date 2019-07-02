@@ -55,10 +55,9 @@ const columns = (action) =>{
 function AdminMovies(props){
     // console.log(props);
     return (
-        <>
-        <PageHeader onBack={() =>props.history.push('/admin/resources/lists')} title="Movies" subTitle="所有电影页" />
-        <MovieListTable {...props}/>
-        </>
+        <PageHeader onBack={() =>props.history.push('/admin/resources/lists')} title="Movies" subTitle="所有电影页" >
+            <MovieListTable {...props}/>
+        </PageHeader>
     )
 }
 
@@ -77,7 +76,6 @@ function AdminTags(props){
                 'status':0,
                 'data':[]
         },
-        'get'
     );
     
     const {message} = data;

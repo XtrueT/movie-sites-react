@@ -85,7 +85,7 @@ Axios_server.interceptors.response.use(
             // console.log(error.request);
             if(error.request.status===0){
                 Message.error("连接超时或没有该资源",3);
-                window.location.href='/error';
+                // window.location.href='/error';
             }
             return Promise.reject(error.request);
         }

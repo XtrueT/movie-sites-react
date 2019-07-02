@@ -11,17 +11,17 @@ const SubMenu = Menu.SubMenu;
 const {user_menus,isLogged,notLogged} = navMenus();
 function Navs(props){
     // console.log(props);
-    const [selectedKeys,set_selectKey]=useState([props.history.location.pathname])
+    const [selectedKeys,set_selectKey]=useState([props.history.location.pathname]);
+    const [isOnline] = useState(props.nav.isLogin);
 
     useEffect(
         ()=>{
             window.addEventListener("popstate",set_selectKey([props.history.location.pathname]));
-        return ()=>{
-            window.removeEventListener("popstate",set_selectKey([props.history.location.pathname]));
-        }},[props]
+            return ()=>{
+                window.removeEventListener("popstate",set_selectKey([props.history.location.pathname]));
+        }},[props.history.location.pathname]
     )
     
-    const {isLogin} = props.nav;
     return (
             <Menu
                 selectedKeys={selectedKeys}
@@ -59,7 +59,7 @@ function Navs(props){
                         </Menu.Item>
                 })
             }
-            {isLogin ?(
+            {isOnline ?(
                 [isLogged.map(v => {
                     return v.subMenu?
                         <SubMenu 

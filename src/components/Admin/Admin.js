@@ -7,6 +7,7 @@ import AddMovie from './AddMovie';
 import Resources from './Resources';
 import Error from '../Home/Error';
 import AdminHome from './AdminHome';
+import Users from './Users';
 
 const Admin = ()=>{
     return (
@@ -16,7 +17,7 @@ const Admin = ()=>{
         <AuthRouter path='/admin/resources/movies/add' extra component={AddMovie}/>
         <AuthRouter path="/admin/:role/logs" exact component ={Logs}/>
         {/* 登录权限控制组件 */}
-        <AuthRouter path="/admin/users/:action" exact component ={()=>(<div>adminUser</div>)}/>
+        <AuthRouter path="/admin/users/:action" exact component ={Users}/>
         <AuthRouter path="/admin/change_password" exact component={()=>(<div>change_password</div>)}/>
         <Route path="/admin/error" component={Error} />
         <Route path="*" render={() => <Redirect to="/admin/error"/> }/>

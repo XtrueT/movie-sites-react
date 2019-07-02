@@ -66,7 +66,7 @@ class UserLayout extends Component {
                             <Route path="/forgot_password" exact component ={()=>(<div>forgot_password</div>)}/>
                             <Route path="/movie/:id" exact component ={PlayMovie}/>
                             {/* 登录权限控制组件 */}
-                            <AuthRouter path="/profile" exact  component ={Profile}/>
+                            <AuthRouter path="/profile"  component ={Profile}/>
                             <AuthRouter path="/about/:action" exact  component ={AboutYou}/>
                             <AuthRouter path="/change_password" exact component={()=>(<div>change_password</div>)}/>
                             <AuthRouter path="/:user_id/change_password" exact component={()=>(<div>change_password</div>)}/>
