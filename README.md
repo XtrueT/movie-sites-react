@@ -1,4 +1,42 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 开始
+  This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+  
+  [在creat-react-app使用ant design](https://ant.design/docs/react/use-with-create-react-app-cn)
+
+## 声明
+  有待完善
+
+## 功能
+
+- [x] [react-router](https://www.jianshu.com/p/e06736dbac65)完成客户端路由
+- [x] 权限路由
+- [x] 完成用户前台页面构建
+- [x] 完成管理员后台页面构建
+- [x] 使用axios进行数据获取
+- [x] 使用 React Hook 进行数据获取的封装
+- [ ] 使用 [react-redux](https://redux.js.org/basics/usage-with-react)
+- [ ] 使用 jwt-decode 解析token
+
+## 相关依赖
+```
+  "dependencies": {
+    "antd": "^3.17.0",
+    "axios": "^0.18.0",
+    "babel-plugin-import": "^1.11.0",
+    "customize-cra": "^0.2.12",
+    "griffith": "^1.5.0",
+    "jwt-decode": "^2.2.0",
+    "less": "^3.9.0",
+    "less-loader": "^5.0.0",
+    "react": "^16.8.6",
+    "react-app-rewired": "^2.1.3",
+    "react-dom": "^16.8.6",
+    "react-router": "^5.0.0",
+    "react-router-dom": "^5.0.0",
+    "react-scripts": "3.0.0"
+  },
+  
+```
 
 ## Available Scripts
 
